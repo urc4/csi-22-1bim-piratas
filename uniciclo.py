@@ -45,37 +45,64 @@ class Player(pygame.sprite.Sprite):
       self.pos = (WIDTH/2,HEIGHT/2)
       self.width = 25
       self.height = 40 
-      self.speed = 10
-      self.angle = math.pi/2
+      self.speed = 3
+      self.alpha = 1
+      self.accel = 1
+      self.omega = 5
+      self.angle = 3*math.pi/2
       self.color = (0,255,0)
       self.surface = pygame.Surface((self.width,self.height))
       self.surface.fill(self.color)
       self.cannon_balls = []
 
    # teria que ver comom fica com rotacao acho qeu basta adicionar o calculo em relacao ao angulo
-
+# poderia usar pos%width
    def switch_sides(self):
-      if(self.pos[0]>WIDTH - self.width/5):
+      if(self.pos[0]>WIDTH):
          self.pos = (0,self.pos[1])
-      elif(self.pos[0]<0 + self.width/5):
+      elif(self.pos[0]<0):
          self.pos = (WIDTH,self.pos[1])
       if(self.pos[1]>HEIGHT):
          self.pos = (self.pos[0],0)
-      elif(self.pos[1]<0 + self.height/5):
+      elif(self.pos[1]<0):
          self.pos = (self.pos[0],HEIGHT)
       return self.pos
    
-   def update(self,key_pressed):
+   def update_pressed(self,key_pressed):
       if key_pressed == UP:
-         self.pos = (self.pos[0],self.pos[1]-self.speed) 
-      if key_pressed == DOWN:
-         self.pos = (self.pos[0],self.pos[1]+self.speed) 
+         # self.speed += self.accel
+         self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
       if key_pressed == LEFT:
-         self.pos = (self.pos[0]-self.speed,self.pos[1]) 
+         # self.omega += self.alpha
+         ang_deg = self.angle*180/math.pi;
+         ang_deg = (ang_deg - self.omega)%360;
+         self.angle  = ang_deg*math.pi/180;
+         self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
+
       if key_pressed == RIGHT:
-         self.pos = (self.pos[0]+self.speed,self.pos[1]) 
+         ang_deg = self.angle*180/math.pi;
+         ang_deg = (ang_deg + self.omega)%360;
+         self.angle  = ang_deg*math.pi/180;
+         self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
 
       self.pos = self.switch_sides()
+
+
+   def update_unpressed(self):
+      self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
+      
+      # if key_pressed == UP:
+      #    self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
+      # if key_pressed == LEFT:
+      #    self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
+
+      # if key_pressed == RIGHT:
+      #    self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
+
+      self.pos = self.switch_sides()
+
+
+
 
    def create_cannon_ball(self):
       # talvez tenha q considersar o angulo para acahr o centro depois
@@ -103,6 +130,7 @@ all_sprites = pygame.sprite.Group()
 boat = Player(all_sprites)
 # all_sprites.add(boat)
 
+is_pressed = True
 
 while True:
    clock.tick(FPS)
@@ -114,17 +142,35 @@ while True:
       if event.type == KEYDOWN:
          if event.key == K_UP:
             key_pressed = UP
-         if event.key == K_DOWN:
-            key_pressed = DOWN
+            is_pressed = True     
          if event.key == K_LEFT:
             key_pressed = LEFT
+            is_pressed = True     
          if event.key == K_RIGHT:
-            key_pressed = RIGHT
+            key_pressed = RIGHT    
+            is_pressed = True     
+
+      if event.type == KEYDOWN:
          if event.key == K_SPACE:
-            boat.create_cannon_ball()            
+            boat.create_cannon_ball() 
 
 
-   boat.update(key_pressed)
+      if event.type == KEYUP:
+         if event.key == K_UP:
+            key_unpressed = UP
+            # boat.accel = 0;
+            is_pressed = False
+         if event.key == K_LEFT:
+            key_unpressed = LEFT
+            is_pressed = False
+         if event.key == K_RIGHT:
+            key_unpressed = RIGHT         
+            is_pressed = False
+
+   if is_pressed:
+      boat.update_pressed(key_pressed)
+   else:
+      boat.update_unpressed()
 
    screen.fill((0,0,255))
    screen.blit(boat.surface,boat.pos)
