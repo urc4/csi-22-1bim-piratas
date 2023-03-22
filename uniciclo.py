@@ -7,23 +7,30 @@ RIGHT = 1
 DOWN = 2
 LEFT = 3
 
-WIDTH = 1020
-HEIGHT = 720
+WIDTH = 500
+HEIGHT = 500
 FPS = 60
 
 # no update tem qe remover canhao quando destroi um navio ou qundno sai da tela para diminuir tamnaho do vetor
 class CannonBall(pygame.sprite.Sprite):
-   def __init__(self, pos, ang):
+   def __init__(self, pos, ang, size, speed):
       # super.__init__(groups)
-      self.speed = 50
+      self.speed = speed
       self.color = (255,0,0)
       self.angle = ang
-      self.size = 10
+      self.size = size
       self.pos = (pos[0]-self.size/2,pos[1]-self.size/2)
       self.surface = pygame.Surface((self.size,self.size))
    
    def update(self):
       self.pos = (self.pos[0] + self.speed*math.cos(self.angle),self.pos[1]+self.speed*math.sin(self.angle)) 
+
+   def is_out_of_screen(self):
+      if(self.pos[0] > WIDTH + 2*self.size or self.pos[0] < 0 - self.size):
+         return True
+      elif(self.pos[1] > HEIGHT + 2*self.size or self.pos[1] < 0 - self.size):
+         return True
+      return False
 
 class EnemyBoat(pygame.sprite.Sprite):
    pass
@@ -67,17 +74,20 @@ class Player(pygame.sprite.Sprite):
          self.pos = (self.pos[0]-self.speed,self.pos[1]) 
       if key_pressed == RIGHT:
          self.pos = (self.pos[0]+self.speed,self.pos[1]) 
-      # if len(self.cannon_balls) > 0:
-      #    for cannon_ball in self.cannon_balls:
-      #       # cannon_ball.update()
-      #       pass
 
       self.pos = self.switch_sides()
 
    def create_cannon_ball(self):
       # talvez tenha q considersar o angulo para acahr o centro depois
-      new_cannon_ball = CannonBall((self.pos[0] + self.width/2,self.pos[1]+self.height/2),self.angle)
+      size = 15
+      speed = 20
+      ang = self.angle
+      pos = (self.pos[0] + self.width/2,self.pos[1]+self.height/2)
+      new_cannon_ball = CannonBall(pos,ang,size,speed)
       self.cannon_balls.append(new_cannon_ball)
+   
+   def conserve_momentum(self):
+      pass
 
 
 # centro da surface eh no ponto 0,0
@@ -111,7 +121,6 @@ while True:
          if event.key == K_RIGHT:
             key_pressed = RIGHT
          if event.key == K_SPACE:
-            # new_cannon_ball = CannonBall(boat.pos,boat.angle)
             boat.create_cannon_ball()            
 
 
@@ -119,8 +128,11 @@ while True:
 
    screen.fill((0,0,255))
    screen.blit(boat.surface,boat.pos)
-   for cannon_ball in boat.cannon_balls:
+   for index,cannon_ball in enumerate(boat.cannon_balls):
       cannon_ball.update()
+      if(cannon_ball.is_out_of_screen()):
+         boat.cannon_balls.pop(index)
+         continue
       screen.blit(cannon_ball.surface, cannon_ball.pos)
 
    pygame.display.update()
