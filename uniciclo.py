@@ -112,9 +112,15 @@ class Player(pygame.sprite.Sprite):
       pos = (self.pos[0] + self.width/2,self.pos[1]+self.height/2)
       new_cannon_ball = CannonBall(pos,ang,size,speed)
       self.cannon_balls.append(new_cannon_ball)
+      self.conserve_momentum(new_cannon_ball)
    
-   def conserve_momentum(self):
-      pass
+   def conserve_momentum(self,cannon_ball):
+      # massa = densidade-superficial * area
+      sigma_ball = 1
+      mass_ball = sigma_ball*cannon_ball.size**2
+      sigma_player = 5
+      mass_player = sigma_player*self.width*self.height
+      self.speed = self.speed - (mass_ball/mass_player)*cannon_ball.speed
 
 
 # centro da surface eh no ponto 0,0
