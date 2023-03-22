@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
-
+import math
 UP = 0
 RIGHT = 1
 DOWN = 2
@@ -11,9 +11,19 @@ WIDTH = 1020
 HEIGHT = 720
 FPS = 60
 
-
+# no update tem qe remover canhao quando destroi um navio ou qundno sai da tela para diminuir tamnaho do vetor
 class CannonBall(pygame.sprite.Sprite):
-   pass
+   def __init__(self, pos, ang):
+      # super.__init__(groups)
+      self.speed = 50
+      self.color = (255,0,0)
+      self.angle = ang
+      self.size = 10
+      self.pos = (pos[0]-self.size/2,pos[1]-self.size/2)
+      self.surface = pygame.Surface((self.size,self.size))
+   
+   def update(self):
+      self.pos = (self.pos[0] + self.speed*math.cos(self.angle),self.pos[1]+self.speed*math.sin(self.angle)) 
 
 class EnemyBoat(pygame.sprite.Sprite):
    pass
@@ -29,20 +39,22 @@ class Player(pygame.sprite.Sprite):
       self.width = 25
       self.height = 40 
       self.speed = 10
-      self.angle = 0
+      self.angle = math.pi/2
       self.color = (0,255,0)
-      self.surface = pygame.Surface((25,40))
+      self.surface = pygame.Surface((self.width,self.height))
       self.surface.fill(self.color)
       self.cannon_balls = []
 
+   # teria que ver comom fica com rotacao acho qeu basta adicionar o calculo em relacao ao angulo
+
    def switch_sides(self):
-      if(self.pos[0]>WIDTH):
+      if(self.pos[0]>WIDTH - self.width/5):
          self.pos = (0,self.pos[1])
-      if(self.pos[0]<0):
+      elif(self.pos[0]<0 + self.width/5):
          self.pos = (WIDTH,self.pos[1])
       if(self.pos[1]>HEIGHT):
          self.pos = (self.pos[0],0)
-      if(self.pos[1]<0):
+      elif(self.pos[1]<0 + self.height/5):
          self.pos = (self.pos[0],HEIGHT)
       return self.pos
    
@@ -55,50 +67,27 @@ class Player(pygame.sprite.Sprite):
          self.pos = (self.pos[0]-self.speed,self.pos[1]) 
       if key_pressed == RIGHT:
          self.pos = (self.pos[0]+self.speed,self.pos[1]) 
+      # if len(self.cannon_balls) > 0:
+      #    for cannon_ball in self.cannon_balls:
+      #       # cannon_ball.update()
+      #       pass
+
       self.pos = self.switch_sides()
-   
-   def shoot_cannon_ball():
-      pass
+
+   def create_cannon_ball(self):
+      # talvez tenha q considersar o angulo para acahr o centro depois
+      new_cannon_ball = CannonBall((self.pos[0] + self.width/2,self.pos[1]+self.height/2),self.angle)
+      self.cannon_balls.append(new_cannon_ball)
+
+
 # centro da surface eh no ponto 0,0
 # cuidado pra nao queberar o jogo pra ifcar indo e voltando no canot da tela
-
-# def switch_sides(boat_pos):
-#    if(boat_pos[0]>WIDTH):
-#       boat_pos = (0,boat_pos[1])
-#    if(boat_pos[0]<0):
-#       boat_pos = (WIDTH,boat_pos[1])
-#    if(boat_pos[1]>HEIGHT):
-#       boat_pos = (boat_pos[0],0)
-#    if(boat_pos[1]<0):
-#       boat_pos = (boat_pos[0],HEIGHT)
-#    return boat_pos
-
-# def shoot_cannon_ball(boat_pos):
-#    cannon_ball_size = 10
-#    cannon_ball_color = (255,0,0)
-#    cannon_ball = pygame.Surface((cannon_ball_size,cannon_ball_size))
-#    cannon_ball.fill(cannon_ball_color)
-#    cannon_ball_pos = boat_pos
-#    speed = 30
-#    screen.blit(cannon_ball,cannon_ball_pos)
-#    boat_pos = (cannon_ball_pos[0],cannon_ball_pos[1]+speed)    
-#    return cannon_ball
-
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('Piratas da Guanabara')
 clock = pygame.time.Clock()
 
-# boat_pos = (WIDTH/2,HEIGHT/2)
-# boat_width = 25
-# boat_height = 40
-# boat = pygame.Surface((boat_width,boat_height))
-# boat_color = (0,255,0)
-# boat.fill(boat_color)
-# speed = 10
-# boat_direction = 0
-# cannon_balls =[]
 key_pressed = 0
 all_sprites = pygame.sprite.Group()
 boat = Player(all_sprites)
@@ -121,26 +110,18 @@ while True:
             key_pressed = LEFT
          if event.key == K_RIGHT:
             key_pressed = RIGHT
-         # if event.key == K_SPACE:
-         #    cannon_balls.append(shoot_cannon_ball(boat_pos))
-            
+         if event.key == K_SPACE:
+            # new_cannon_ball = CannonBall(boat.pos,boat.angle)
+            boat.create_cannon_ball()            
 
-
-
-   # if boat_direction == UP:
-   #    boat_pos = (boat_pos[0],boat_pos[1]-speed) 
-   # if boat_direction == DOWN:
-   #    boat_pos = (boat_pos[0],boat_pos[1]+speed) 
-   # if boat_direction == LEFT:
-   #    boat_pos = (boat_pos[0]-speed,boat_pos[1]) 
-   # if boat_direction == RIGHT:
-   #    boat_pos = (boat_pos[0]+speed,boat_pos[1]) 
 
    boat.update(key_pressed)
-   # boat_pos = switch_sides(boat_pos)
 
    screen.fill((0,0,255))
    screen.blit(boat.surface,boat.pos)
+   for cannon_ball in boat.cannon_balls:
+      cannon_ball.update()
+      screen.blit(cannon_ball.surface, cannon_ball.pos)
 
    pygame.display.update()
       
