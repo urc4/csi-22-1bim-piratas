@@ -46,8 +46,9 @@ class Player(pygame.sprite.Sprite):
       self.width = 25
       self.height = 40 
       self.speed = 3
-      self.alpha = 1
-      self.accel = 1
+      self.max_speed = 6
+      self.alpha = 0.1
+      self.accel = 0.1
       self.omega = 5
       self.angle = 3*math.pi/2
       self.color = (0,255,0)
@@ -70,7 +71,9 @@ class Player(pygame.sprite.Sprite):
    
    def update_pressed(self,key_pressed):
       if key_pressed == UP:
-         # self.speed += self.accel
+         self.speed += self.accel
+         if(self.speed > self.max_speed):
+            self.speed = self.max_speed
          self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
       if key_pressed == LEFT:
          # self.omega += self.alpha
@@ -89,16 +92,9 @@ class Player(pygame.sprite.Sprite):
 
 
    def update_unpressed(self):
+      self.omega = 5
       self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
       
-      # if key_pressed == UP:
-      #    self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
-      # if key_pressed == LEFT:
-      #    self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
-
-      # if key_pressed == RIGHT:
-      #    self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
-
       self.pos = self.switch_sides()
 
 
@@ -131,12 +127,11 @@ screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('Piratas da Guanabara')
 clock = pygame.time.Clock()
 
-key_pressed = 0
 all_sprites = pygame.sprite.Group()
 boat = Player(all_sprites)
 # all_sprites.add(boat)
 
-is_pressed = True
+is_pressed = False
 
 while True:
    clock.tick(FPS)
