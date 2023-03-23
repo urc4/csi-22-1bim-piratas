@@ -1,7 +1,10 @@
+# precisa corrigir o funcinoamento das teclas tipo pra ter melhor responsivividade
+
 import pygame
 from pygame.locals import *
 import sys
 import math
+
 UP = 0
 RIGHT = 1
 DOWN = 2
@@ -48,6 +51,9 @@ class Player(pygame.sprite.Sprite):
       self.speed = 3
       self.max_speed = 6
       self.alpha = 0.1
+      self.sigma = 5
+      self.mass = self.sigma*self.width*self.height
+      self.air_resistance_constant = 100
       self.accel = 0.1
       self.omega = 5
       self.angle = 3*math.pi/2
@@ -70,8 +76,9 @@ class Player(pygame.sprite.Sprite):
       return self.pos
    
    def update_pressed(self,key_pressed):
+      self.air_resistance = -self.air_resistance_constant*self.speed/self.mass 
       if key_pressed == UP:
-         self.speed += self.accel
+         self.speed += self.accel + self.air_resistance
          if(self.speed > self.max_speed):
             self.speed = self.max_speed
          self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
@@ -92,7 +99,13 @@ class Player(pygame.sprite.Sprite):
 
 
    def update_unpressed(self):
+      self.air_resistance = -self.air_resistance_constant*self.speed/self.mass 
+
       self.omega = 5
+      if self.speed > 0:
+         self.speed += self.air_resistance
+      if self.speed < 0:
+         self.speed += self.air_resistance
       self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
       
       self.pos = self.switch_sides()
@@ -117,6 +130,8 @@ class Player(pygame.sprite.Sprite):
       sigma_player = 5
       mass_player = sigma_player*self.width*self.height
       self.speed = self.speed - (mass_ball/mass_player)*cannon_ball.speed
+      # nao pode deixar passar do max speed?
+
 
 
 # centro da surface eh no ponto 0,0
@@ -157,16 +172,15 @@ while True:
 
 
       if event.type == KEYUP:
+         is_pressed = False
          if event.key == K_UP:
             key_unpressed = UP
             # boat.accel = 0;
             is_pressed = False
          if event.key == K_LEFT:
             key_unpressed = LEFT
-            is_pressed = False
          if event.key == K_RIGHT:
             key_unpressed = RIGHT         
-            is_pressed = False
 
    if is_pressed:
       boat.update_pressed(key_pressed)
