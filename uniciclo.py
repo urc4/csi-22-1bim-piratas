@@ -1,7 +1,7 @@
-# precisa corrigir o funcinoamento das teclas tipo pra ter melhor responsivividadea
+# TODO corrigir o funcionamento das teclas tipo pra ter melhor responsivividade
 
 import pygame
-from pygame.locals import *
+from pygame.locals import QUIT, KEYDOWN, K_UP, K_LEFT, K_RIGHT, K_SPACE, KEYUP
 import sys
 import math
 from debug import *
@@ -16,7 +16,8 @@ WIDTH = 500
 HEIGHT = 500
 FPS = 60
 
-# no update tem qe remover canhao quando destroi um navio ou qundno sai da tela para diminuir tamnaho do vetor
+
+# TODO remover canhão no update quando destrói um navio ou quando sai da tela para diminuir tamanho do vetor
 class CannonBall(pygame.sprite.Sprite):
    def __init__(self, pos, ang, size, speed):
       # super.__init__(groups)
@@ -37,8 +38,9 @@ class CannonBall(pygame.sprite.Sprite):
          return True
       return False
 
+
 class EnemyBoat(pygame.sprite.Sprite):
-   def __init__(self,groups):
+   def __init__(self):
       # super().__init__(groups)
       self.pos = (random.random()*WIDTH, random.random()*HEIGHT)
       self.width = 50
@@ -56,9 +58,10 @@ class EnemyBoat(pygame.sprite.Sprite):
 class EnemyPirate(pygame.sprite.Sprite):
    pass
 
+
 class Player(pygame.sprite.Sprite):
    
-   def __init__(self, groups):
+   def __init__(self):
       # super.__init__(groups) noa ta funcionadno nao sei pq
       self.pos = (WIDTH/2,HEIGHT/2)
       self.width = 25
@@ -78,7 +81,7 @@ class Player(pygame.sprite.Sprite):
       self.cannon_balls = []
 
    # teria que ver comom fica com rotacao acho qeu basta adicionar o calculo em relacao ao angulo
-# poderia usar pos%width
+   # poderia usar pos%width
    def switch_sides(self):
       if(self.pos[0]>WIDTH):
          self.pos = (0,self.pos[1])
@@ -123,9 +126,6 @@ class Player(pygame.sprite.Sprite):
       
       self.pos = self.switch_sides()
 
-
-
-
    def create_cannon_ball(self):
       # talvez tenha q considersar o angulo para acahr o centro depois
       size = 15
@@ -157,11 +157,11 @@ clock = pygame.time.Clock()
 count = 0
 
 all_sprites = pygame.sprite.Group()
-boat = Player(all_sprites)
-# all_sprites.add(boat)
+boat = Player()
 enemies = []
 is_pressed = False
 gen_new_enemy = False
+key_pressed = None
 
 while True:
    clock.tick(FPS)
@@ -184,17 +184,9 @@ while True:
          if event.key == K_SPACE:
             boat.create_cannon_ball() 
 
-
       if event.type == KEYUP:
          is_pressed = False
-         if event.key == K_UP:
-            key_unpressed = UP
-            # boat.accel = 0;
-            is_pressed = False
-         if event.key == K_LEFT:
-            key_unpressed = LEFT
-         if event.key == K_RIGHT:
-            key_unpressed = RIGHT         
+
 
    if is_pressed:
       boat.update_pressed(key_pressed)
@@ -213,7 +205,7 @@ while True:
    scoreboard = int(count/60)
    debug(scoreboard)
    if scoreboard%10 == 0:
-      new_enemy = EnemyBoat(all_sprites)
+      new_enemy = EnemyBoat()
       enemies.append(new_enemy)
       count += 60
    for enemy in enemies:
