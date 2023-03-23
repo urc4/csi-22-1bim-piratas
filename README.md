@@ -27,6 +27,6 @@ em caso de colisão. A frota será composta de navios piratas e piratas propriam
 
 ## ☕ Contribuidores
 
-Este projeto foi realizado em colaboração com: Daniel Quintão(https://github.com/danielqm), Giuseppe Vicente(https://github.com/giuseppevb) e Gustavo Beato(https://github.com/urc4)
+Este projeto foi realizado em colaboração com: Daniel Quintão(https://github.com/danielquintao), Giuseppe Vicente(https://github.com/giuseppevb) e Gustavo Beato(https://github.com/urc4)
 
 ---
