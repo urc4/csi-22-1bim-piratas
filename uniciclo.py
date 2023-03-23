@@ -117,11 +117,9 @@ class Player(pygame.sprite.Sprite):
       self.air_resistance = -self.air_resistance_constant*self.speed/self.mass 
 
       self.omega = 5
-      if self.speed > 0:
+      if self.speed != 0:
          self.speed += self.air_resistance
-      if self.speed < 0:
-         self.speed += self.air_resistance
-      self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
+      self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle))
       
       self.pos = self.switch_sides()
 
@@ -182,9 +180,7 @@ while True:
             is_pressed = True     
          if event.key == K_RIGHT:
             key_pressed = RIGHT    
-            is_pressed = True     
-
-      if event.type == KEYDOWN:
+            is_pressed = True
          if event.key == K_SPACE:
             boat.create_cannon_ball() 
 
