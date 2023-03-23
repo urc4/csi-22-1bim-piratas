@@ -1,9 +1,11 @@
-# precisa corrigir o funcinoamento das teclas tipo pra ter melhor responsivividade
+# precisa corrigir o funcinoamento das teclas tipo pra ter melhor responsivividadea
 
 import pygame
 from pygame.locals import *
 import sys
 import math
+from debug import *
+import random
 
 UP = 0
 RIGHT = 1
@@ -36,7 +38,20 @@ class CannonBall(pygame.sprite.Sprite):
       return False
 
 class EnemyBoat(pygame.sprite.Sprite):
-   pass
+   def __init__(self,groups):
+      # super().__init__(groups)
+      self.pos = (random.random()*WIDTH, random.random()*HEIGHT)
+      self.width = 50
+      self.height = 50
+      self.speed = 2
+      self.angle = random.random()*2*math.pi
+      self.color = (255,0,0)
+      self.surface = pygame.Surface((self.width,self.height))
+      self.surface.fill(self.color)
+
+   def update(self):
+      self.pos = (self.pos[0] + self.speed*math.cos(self.angle) ,self.pos[1]+self.speed*math.sin(self.angle)) 
+
 
 class EnemyPirate(pygame.sprite.Sprite):
    pass
@@ -141,15 +156,18 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('Piratas da Guanabara')
 clock = pygame.time.Clock()
+count = 0
 
 all_sprites = pygame.sprite.Group()
 boat = Player(all_sprites)
 # all_sprites.add(boat)
-
+enemies = []
 is_pressed = False
+gen_new_enemy = False
 
 while True:
    clock.tick(FPS)
+   count += 1
    for event in pygame.event.get():
       if event.type == QUIT:
          pygame.quit() 
@@ -196,5 +214,15 @@ while True:
          continue
       screen.blit(cannon_ball.surface, cannon_ball.pos)
 
+   scoreboard = int(count/60)
+   debug(scoreboard)
+   if scoreboard%10 == 0:
+      new_enemy = EnemyBoat(all_sprites)
+      enemies.append(new_enemy)
+      count += 60
+   for enemy in enemies:
+      enemy.update()
+      screen.blit(enemy.surface,enemy.pos)
    pygame.display.update()
+
       
