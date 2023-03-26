@@ -37,19 +37,24 @@ class EnemyBoat(pygame.sprite.Sprite):
         self.height = 50
         self.image, self.rect = load_png("pirate-ship.png")
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        angle_offset = math.pi / 6  # XXX este parâmetro depende da sprite (para caso não aponte na direção (1,0))
+        self.image = pygame.transform.rotate(self.image, angle_offset * 180 / math.pi)
         self.original_image = self.image  # para as rotinas que rotacionam o navio
         self.pos = (random.random() * WIDTH, random.random() * HEIGHT)
         self.speed = 2
         self.angle = random.random() * 2 * math.pi
         self.surface = pygame.Surface((self.width, self.height))
-        self.angle_offset = math.pi / 6  # XXX este parâmetro depende da sprite (para caso não aponte na direção (1,0))
 
     def __rotate_img(self):
         # SEMPRE rotacionar a partir da imagem ORIGINAL senao a imagem fica arbitrariamente distorcida
         # (dica frequente em tutoriais e fóruns)
-        if not (0 <= self.angle - self.angle_offset < 2 * math.pi):
-            self.angle %= (2 * math.pi + self.angle_offset)  # obs: x % y >= 0 se y > 0 (diferente de C e C++)
-        self.image = pygame.transform.rotate(self.original_image, -180 * (self.angle - self.angle_offset) / math.pi)
+        if not (0 <= self.angle < 2 * math.pi):
+            self.angle %= (2 * math.pi)  # obs: x % y >= 0 se y > 0 (diferente de C e C++)
+        if math.pi / 2 <= self.angle < 3 * math.pi / 2:
+            self.image = pygame.transform.rotate(pygame.transform.flip(self.original_image, False, True),
+                                                 -180 * self.angle / math.pi)
+        else:
+            self.image = pygame.transform.rotate(self.original_image, -180 * self.angle / math.pi)
         # mantém o mesmo centro:
         center = self.rect.center
         self.rect = self.image.get_rect(center=center)
@@ -72,6 +77,8 @@ class Player(pygame.sprite.Sprite):
         self.height = 40
         self.image, self.rect = load_png("boat.png")
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        angle_offset = math.pi / 6  # XXX este parâmetro depende da sprite (para caso não aponte na direção (1,0))
+        self.image = pygame.transform.rotate(self.image, angle_offset * 180 / math.pi)
         self.original_image = self.image  # para as rotinas que rotacionam o navio
         self.pos = (WIDTH / 2, HEIGHT / 2)
         self.rect = self.rect.move(self.pos)
@@ -83,7 +90,6 @@ class Player(pygame.sprite.Sprite):
         self.accel = 0.1
         self.omega = math.pi / 36
         self.angle = 3 * math.pi / 2
-        self.angle_offset = math.pi / 6  # XXX este parâmetro depende da sprite (para caso não aponte na direção (1,0))
 
     # teria que ver comom fica com rotacao acho qeu basta adicionar o calculo em relacao ao angulo
     # poderia usar pos%width
@@ -130,9 +136,12 @@ class Player(pygame.sprite.Sprite):
     def __rotate_img(self):
         # SEMPRE rotacionar a partir da imagem ORIGINAL senao a imagem fica arbitrariamente distorcida
         # (dica frequente em tutoriais e fóruns)
-        if not (0 <= self.angle - self.angle_offset < 2 * math.pi):
-            self.angle %= (2 * math.pi + self.angle_offset)  # obs: x % y >= 0 se y > 0 (diferente de C e C++)
-        self.image = pygame.transform.rotate(self.original_image, -180 * (self.angle - self.angle_offset) / math.pi)
+        if not (0 <= self.angle < 2 * math.pi):
+            self.angle %= (2 * math.pi)  # obs: x % y >= 0 se y > 0 (diferente de C e C++)
+        if math.pi / 2 <= self.angle < 3 * math.pi / 2:
+            self.image = pygame.transform.rotate(pygame.transform.flip(self.original_image, False, True), -180 * self.angle / math.pi)
+        else:
+            self.image = pygame.transform.rotate(self.original_image, -180 * self.angle / math.pi)
         # mantém o mesmo centro:
         center = self.rect.center
         self.rect = self.image.get_rect(center=center)
