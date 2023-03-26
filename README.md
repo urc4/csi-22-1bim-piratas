@@ -9,6 +9,12 @@
 de gráficos em um ambiente 2D. O objetivo do projeto é desenvolver habilidades em um dos paradigmas mais importantes da áre de programação denominado de Programação Orientada a Objetos (POO), assim como a aplicação de conceitos derivados da mesma, a exemplo da herança e do polimorfismo.  
 
 
+## ⚙️ Pré-requisitos e instalação
+> Python 3 com uma instalação de PyGame. Os *sprites* usados podem ser baixados com os ``download_sprites.sh`` (Linux)
+ou ``download_sprites.bat`` (Windows com comando ``curl`` instalado), ou diretamente da fonte ([aqui](https://www.flaticon.com/free-icon/boat_1048357?term=boat&page=1&position=35&origin=search&related_id=1048357) e 
+[aqui](https://www.flaticon.com/free-icon/pirate-ship_7957562?term=pirate+boat&page=1&position=57&origin=search&related_id=7957562)),
+em cujo caso devem ser colocados em ``data/`` com  os nomes ``boat.png`` e ``pirate-ship.png`` resp.
+
 ---
 
 ## 🦜 Tema
