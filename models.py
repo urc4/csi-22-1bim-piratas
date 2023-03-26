@@ -33,18 +33,31 @@ class CannonBall(pygame.sprite.Sprite):
 class EnemyBoat(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_png("pirate-ship.png")
-        self.pos = (random.random() * WIDTH, random.random() * HEIGHT)
         self.width = 50
         self.height = 50
+        self.image, self.rect = load_png("pirate-ship.png")
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        self.original_image = self.image  # para as rotinas que rotacionam o navio
+        self.pos = (random.random() * WIDTH, random.random() * HEIGHT)
         self.speed = 2
         self.angle = random.random() * 2 * math.pi
         self.surface = pygame.Surface((self.width, self.height))
+        self.angle_offset = math.pi / 6  # XXX este parâmetro depende da sprite (para caso não aponte na direção (1,0))
+
+    def __rotate_img(self):
+        # SEMPRE rotacionar a partir da imagem ORIGINAL senao a imagem fica arbitrariamente distorcida
+        # (dica frequente em tutoriais e fóruns)
+        if not (0 <= self.angle - self.angle_offset < 2 * math.pi):
+            self.angle %= (2 * math.pi + self.angle_offset)  # obs: x % y >= 0 se y > 0 (diferente de C e C++)
+        self.image = pygame.transform.rotate(self.original_image, -180 * (self.angle - self.angle_offset) / math.pi)
+        # mantém o mesmo centro:
+        center = self.rect.center
+        self.rect = self.image.get_rect(center=center)
 
     def update(self):
         self.pos = (self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
         self.rect.update(self.pos[0], self.pos[1], self.width, self.height)
+        self.__rotate_img()
 
 
 class EnemyPirate(pygame.sprite.Sprite):
@@ -55,24 +68,26 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_png("boat.png")
-        self.pos = (WIDTH / 2, HEIGHT / 2)
-        self.rect = self.rect.move(self.pos)
         self.width = 25
         self.height = 40
+        self.image, self.rect = load_png("boat.png")
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        self.original_image = self.image  # para as rotinas que rotacionam o navio
+        self.pos = (WIDTH / 2, HEIGHT / 2)
+        self.rect = self.rect.move(self.pos)
         self.speed = 3
         self.max_speed = 6
         self.sigma = 5
         self.mass = self.sigma * self.width * self.height
         self.air_resistance_constant = 100
         self.accel = 0.1
-        self.omega = 5
+        self.omega = math.pi / 36
         self.angle = 3 * math.pi / 2
+        self.angle_offset = math.pi / 6  # XXX este parâmetro depende da sprite (para caso não aponte na direção (1,0))
 
     # teria que ver comom fica com rotacao acho qeu basta adicionar o calculo em relacao ao angulo
     # poderia usar pos%width
-    def switch_sides(self):
+    def __switch_sides(self):
         if (self.pos[0] > WIDTH):
             self.pos = (0, self.pos[1])
         elif (self.pos[0] < 0):
@@ -92,46 +107,51 @@ class Player(pygame.sprite.Sprite):
             self.pos = (
             self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
         if key_pressed == LEFT:
-            # self.omega += self.alpha
-            ang_deg = self.angle * 180 / math.pi;
-            ang_deg = (ang_deg - self.omega) % 360;
-            self.angle = ang_deg * math.pi / 180;
+            self.angle = (self.angle - self.omega) % (2 * math.pi)
             self.pos = (
-            self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
+                self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
 
         if key_pressed == RIGHT:
-            ang_deg = self.angle * 180 / math.pi;
-            ang_deg = (ang_deg + self.omega) % 360;
-            self.angle = ang_deg * math.pi / 180;
+            self.angle = (self.angle + self.omega) % (2 * math.pi)
             self.pos = (
-            self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
+                self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
 
-        self.pos = self.switch_sides()
+        self.pos = self.__switch_sides()
 
     def update_unpressed(self):
         self.air_resistance = -self.air_resistance_constant * self.speed / self.mass
 
-        self.omega = 5
         if self.speed != 0:
             self.speed += self.air_resistance
         self.pos = (self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
 
-        self.pos = self.switch_sides()
+        self.pos = self.__switch_sides()
+
+    def __rotate_img(self):
+        # SEMPRE rotacionar a partir da imagem ORIGINAL senao a imagem fica arbitrariamente distorcida
+        # (dica frequente em tutoriais e fóruns)
+        if not (0 <= self.angle - self.angle_offset < 2 * math.pi):
+            self.angle %= (2 * math.pi + self.angle_offset)  # obs: x % y >= 0 se y > 0 (diferente de C e C++)
+        self.image = pygame.transform.rotate(self.original_image, -180 * (self.angle - self.angle_offset) / math.pi)
+        # mantém o mesmo centro:
+        center = self.rect.center
+        self.rect = self.image.get_rect(center=center)
 
     def update(self):
         self.rect.update(self.pos[0], self.pos[1], self.width, self.height)
+        self.__rotate_img()
 
     def create_cannon_ball(self):
-        # talvez tenha q considersar o angulo para acahr o centro depois
+        # talvez tenha q considersar o angulo para achar o centro depois
         size = 8
         speed = 20
         ang = self.angle
         pos = (self.pos[0] + self.width / 2, self.pos[1] + self.height / 2)
         new_cannon_ball = CannonBall(pos, ang, size, speed)
-        self.conserve_momentum(new_cannon_ball)
+        self.__conserve_momentum(new_cannon_ball)
         return new_cannon_ball
 
-    def conserve_momentum(self, cannon_ball):
+    def __conserve_momentum(self, cannon_ball):
         # massa = densidade-superficial * area
         sigma_ball = 1
         mass_ball = sigma_ball * cannon_ball.size ** 2
