@@ -2,21 +2,25 @@ import pygame
 import math
 import random
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
+from resources_utils import load_png
 
 
 # TODO remover canhão no update quando destrói um navio ou quando sai da tela para diminuir tamanho do vetor
+#   (ver pygame.event.pump())
 class CannonBall(pygame.sprite.Sprite):
     def __init__(self, pos, ang, size, speed):
-        # super.__init__(groups)
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_png("cannon_ball.png")
         self.speed = speed
-        self.color = (255, 0, 0)
         self.angle = ang
         self.size = size
+        self.image = pygame.transform.scale(self.image, (self.size, self.size))
         self.pos = (pos[0] - self.size / 2, pos[1] - self.size / 2)
         self.surface = pygame.Surface((self.size, self.size))
 
     def update(self):
         self.pos = (self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
+        self.rect.update(self.pos[0], self.pos[1], self.size, self.size)
 
     def is_out_of_screen(self):
         if (self.pos[0] > WIDTH + 2 * self.size or self.pos[0] < 0 - self.size):
@@ -28,18 +32,19 @@ class CannonBall(pygame.sprite.Sprite):
 
 class EnemyBoat(pygame.sprite.Sprite):
     def __init__(self):
-        # super().__init__(groups)
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_png("pirate-ship.png")
         self.pos = (random.random() * WIDTH, random.random() * HEIGHT)
         self.width = 50
         self.height = 50
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.speed = 2
         self.angle = random.random() * 2 * math.pi
-        self.color = (255, 0, 0)
         self.surface = pygame.Surface((self.width, self.height))
-        self.surface.fill(self.color)
 
     def update(self):
         self.pos = (self.pos[0] + self.speed * math.cos(self.angle), self.pos[1] + self.speed * math.sin(self.angle))
+        self.rect.update(self.pos[0], self.pos[1], self.width, self.height)
 
 
 class EnemyPirate(pygame.sprite.Sprite):
@@ -49,23 +54,21 @@ class EnemyPirate(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
 
     def __init__(self):
-        # super.__init__(groups) noa ta funcionadno nao sei pq
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_png("boat.png")
         self.pos = (WIDTH / 2, HEIGHT / 2)
+        self.rect = self.rect.move(self.pos)
         self.width = 25
         self.height = 40
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.speed = 3
         self.max_speed = 6
-        self.alpha = 0.1
         self.sigma = 5
         self.mass = self.sigma * self.width * self.height
         self.air_resistance_constant = 100
         self.accel = 0.1
         self.omega = 5
         self.angle = 3 * math.pi / 2
-        self.color = (0, 255, 0)
-        self.surface = pygame.Surface((self.width, self.height))
-        self.surface.fill(self.color)
-        self.cannon_balls = []
 
     # teria que ver comom fica com rotacao acho qeu basta adicionar o calculo em relacao ao angulo
     # poderia usar pos%width
@@ -115,15 +118,18 @@ class Player(pygame.sprite.Sprite):
 
         self.pos = self.switch_sides()
 
+    def update(self):
+        self.rect.update(self.pos[0], self.pos[1], self.width, self.height)
+
     def create_cannon_ball(self):
         # talvez tenha q considersar o angulo para acahr o centro depois
-        size = 15
+        size = 8
         speed = 20
         ang = self.angle
         pos = (self.pos[0] + self.width / 2, self.pos[1] + self.height / 2)
         new_cannon_ball = CannonBall(pos, ang, size, speed)
-        self.cannon_balls.append(new_cannon_ball)
         self.conserve_momentum(new_cannon_ball)
+        return new_cannon_ball
 
     def conserve_momentum(self, cannon_ball):
         # massa = densidade-superficial * area

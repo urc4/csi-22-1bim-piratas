@@ -16,21 +16,30 @@ pygame.display.set_caption('Piratas da Guanabara')
 clock = pygame.time.Clock()
 count = 0
 
-all_sprites = pygame.sprite.Group()
+background = pygame.Surface(screen.get_size())
+background = background.convert()
+background.fill((135, 206, 250))
+
 boat = Player()
-enemies = []
 is_pressed = False
 gen_new_enemy = False
 key_pressed = None
 
+boat_sprite = pygame.sprite.RenderPlain(boat)
+enemy_sprites = pygame.sprite.RenderPlain()
+cannonball_sprites = pygame.sprite.RenderPlain()
+
+screen.blit(background, (0, 0))
+pygame.display.flip()
+
 while True:
    clock.tick(FPS)
    count += 1
+
    for event in pygame.event.get():
       if event.type == QUIT:
          pygame.quit() 
          sys.exit()
-
       if event.type == KEYDOWN:
          if event.key == K_UP:
             key_pressed = UP
@@ -42,35 +51,46 @@ while True:
             key_pressed = RIGHT    
             is_pressed = True
          if event.key == K_SPACE:
-            boat.create_cannon_ball() 
-
+            cb = boat.create_cannon_ball()
+            cannonball_sprites.add(cb)
       if event.type == KEYUP:
          is_pressed = False
-
 
    if is_pressed:
       boat.update_pressed(key_pressed)
    else:
       boat.update_unpressed()
 
-   screen.fill((0,0,255))
-   screen.blit(boat.surface,boat.pos)
-   for index,cannon_ball in enumerate(boat.cannon_balls):
-      cannon_ball.update()
-      if(cannon_ball.is_out_of_screen()):
-         boat.cannon_balls.pop(index)
-         continue
-      screen.blit(cannon_ball.surface, cannon_ball.pos)
+   # blit e update barco do jogador:
+   screen.blit(background, boat.rect, boat.rect)  # apaga antiga posicao da tela
+   boat_sprite.update()  # atualiza posicao no objeto
 
+   # blit e update balas de canhão:
+   to_remove = []
+   for cannon_ball in cannonball_sprites.sprites():
+      if cannon_ball.is_out_of_screen():
+         to_remove.append(cannon_ball)
+      else:
+         screen.blit(background, cannon_ball.rect, cannon_ball.rect)   # apaga antiga posicao da tela
+   cannonball_sprites.remove(*to_remove)
+   cannonball_sprites.update()  # atualiza posicao no objeto
+
+   # gera, blit e update barcos inimigos:
    scoreboard = int(count/60)
    debug(scoreboard)
-   if scoreboard%10 == 0:
+   if scoreboard % 10 == 0:
       new_enemy = EnemyBoat()
-      enemies.append(new_enemy)
+      enemy_sprites.add(new_enemy)
       count += 60
-   for enemy in enemies:
-      enemy.update()
-      screen.blit(enemy.surface,enemy.pos)
-   pygame.display.update()
+   for enemy in enemy_sprites:
+      screen.blit(background, enemy.rect, enemy.rect)   # apaga antiga posicao da tela
+   enemy_sprites.update()  # atualiza posicao no objeto
+
+   # desenha novas posicoes na tela:
+   boat_sprite.draw(screen)
+   cannonball_sprites.draw(screen)
+   enemy_sprites.draw(screen)
+
+   pygame.display.flip()
 
       
