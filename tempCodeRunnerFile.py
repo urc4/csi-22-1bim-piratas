@@ -1,1 +1,0 @@
-self.width,self.height

@@ -1,0 +1,7 @@
+WIDTH = 500
+HEIGHT = 500
+FPS = 60
+UP = 0
+RIGHT = 1
+DOWN = 2
+LEFT = 3
