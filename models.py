@@ -2,7 +2,7 @@ import pygame
 import math
 import random
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
-from resources_utils import load_png
+from resources_utils import load_png, spawn_random
 
 
 # TODO remover canhão no update quando destrói um navio ou quando sai da tela para diminuir tamanho do vetor
@@ -88,9 +88,8 @@ class EnemyPirate(pygame.sprite.Sprite):
         angle_offset = 3 * math.pi / 2
         self.image = pygame.transform.rotate(self.image, angle_offset * 180 / math.pi)
         self.original_image = self.image
-        self.pos = (random.random() * WIDTH, random.random() * HEIGHT)
+        self.pos, self.angle = spawn_random()
         self.speed = 2.5
-        self.angle = random.random() * 2 * math.pi
         self.surface = pygame.Surface((self.width, self.height))
 
     def __rotate_img(self):
