@@ -56,7 +56,7 @@ while True:
                 cannonball_sprites.add(cb)
             if event.key == K_DOWN and power_up == True:
                 size = 24
-                cb == boat.create_cannon_ball(size)
+                cb = boat.create_cannon_ball(size)
                 cannonball_sprites.add(cb)
                 power_up = False
         if event.type == KEYUP:
