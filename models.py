@@ -206,9 +206,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.update(self.pos[0], self.pos[1], self.width, self.height)
         self.__rotate_img()
 
-    def create_cannon_ball(self):
+    def create_cannon_ball(self, size=8):
         # talvez tenha q considersar o angulo para achar o centro depois
-        size = 8
         speed = 20
         ang = self.angle
         pos = (self.pos[0] + self.width / 2, self.pos[1] + self.height / 2)

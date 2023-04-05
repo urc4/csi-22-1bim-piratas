@@ -1,7 +1,7 @@
 # TODO corrigir o funcionamento das teclas tipo pra ter melhor responsivividade
 
 import pygame
-from pygame.locals import QUIT, KEYDOWN, K_UP, K_LEFT, K_RIGHT, K_SPACE, KEYUP
+from pygame.locals import QUIT, KEYDOWN, K_UP, K_LEFT, K_RIGHT, K_SPACE, KEYUP, K_DOWN
 import sys
 from debug import debug
 from models import Player, EnemyBoat, EnemyPirate
@@ -24,6 +24,7 @@ boat = Player()
 is_pressed = False
 gen_new_enemy = False
 key_pressed = None
+power_up = False
 
 boat_sprite = pygame.sprite.RenderPlain(boat)
 enemy_sprites = pygame.sprite.RenderPlain()
@@ -53,6 +54,11 @@ while True:
             if event.key == K_SPACE:
                 cb = boat.create_cannon_ball()
                 cannonball_sprites.add(cb)
+            if event.key == K_DOWN and power_up == True:
+                size = 24
+                cb == boat.create_cannon_ball(size)
+                cannonball_sprites.add(cb)
+                power_up = False
         if event.type == KEYUP:
             is_pressed = False
 
@@ -88,6 +94,8 @@ while True:
         new_enemy_boat = EnemyBoat()
         enemy_sprites.add(new_enemy_boat)
         count += 60
+    if scoreboard % 15 == 0:
+        power_up = True
     for enemy in enemy_sprites:
         screen.blit(background, enemy.rect, enemy.rect)  # apaga antiga posicao da tela
     enemy_sprites.update()  # atualiza posicao no objeto
