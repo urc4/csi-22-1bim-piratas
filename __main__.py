@@ -1,5 +1,10 @@
 # TODO corrigir o funcionamento das teclas tipo pra ter melhor responsivividade
 
+
+# mudancas para melhoria da gameplay: rotacionar e driftar, so mudar velcoidade apos presiionar K_UP
+# carregar o canhao especial
+
+
 import pygame
 from pygame.locals import (
     QUIT,
@@ -75,11 +80,11 @@ while True:
         if event.type == KEYUP:
             is_pressed = False
 
-    if is_pressed:
-        boat.update_pressed(key_pressed)
-    else:
-        boat.update_unpressed()
-
+    # if is_pressed:
+    #     boat.update_pressed(key_pressed)
+    # else:
+    #     boat.update_unpressed()
+    boat.move()
     # blit e update barco do jogador:
     screen.blit(background, boat.rect, boat.rect)  # apaga antiga posicao da tela
     boat_sprite.update()  # atualiza posicao no objeto
@@ -102,12 +107,12 @@ while True:
     if scoreboard % 5 == 0:
         # new_enemy_pirate = EnemyPirate()
         # enemy_sprites.add(new_enemy_pirate)
-        enemies.create_enemy(2)
+        enemies.create_new_enemy(2)
         count += 60
     if scoreboard % 10 == 0:
         # new_enemy_boat = EnemyBoat()
         # enemy_sprites.add(new_enemy_boat)
-        enemies.create_enemy(1)
+        enemies.create_new_enemy(1)
         count += 60
     if scoreboard % 15 == 0:
         power_up = True

@@ -15,6 +15,8 @@ class CannonBall(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
         self.pos = (pos[0] - self.size / 2, pos[1] - self.size / 2)
         self.surface = pygame.Surface((self.size, self.size))
+        self.density = 1
+        self.mass = self.density * self.size**2
 
     def update(self):
         self.pos = (
