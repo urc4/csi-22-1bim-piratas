@@ -24,6 +24,7 @@ class Sprite(pygame.sprite.Sprite):
         self.surface = pygame.Surface((self.width, self.height))
         self.mass = model["density"] * model["width"] * model["height"]
 
+        self.air_resistance_constant = 100
         self.all_cannon_balls = pygame.sprite.Group()
 
     def rotate_image(self):
@@ -69,10 +70,10 @@ class Sprite(pygame.sprite.Sprite):
             self.pos = (self.pos[0], HEIGHT)
         return self.pos
 
-    def move(self, key_pressed=None):
+    def move(self, key_pressed):
         self.air_resistance = -self.air_resistance_constant * self.speed / self.mass
         if key_pressed == UP:
-            self.speed += self.accel
+            self.speed += self.accel + self.air_resistance
             if self.speed > self.max_speed:
                 self.speed = self.max_speed
 
@@ -81,6 +82,12 @@ class Sprite(pygame.sprite.Sprite):
 
         if key_pressed == RIGHT:
             self.angle = (self.angle + self.omega) % (2 * math.pi)
+
+        # if self.speed != 0:
+        # self.speed += self.air_resistance
+
+    def move_unpressed(self):
+        self.air_resistance = -self.air_resistance_constant * self.speed / self.mass
 
         if self.speed != 0:
             self.speed += self.air_resistance

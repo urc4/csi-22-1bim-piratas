@@ -7,7 +7,7 @@ from cannonball import CannonBall
 from sprite import Sprite
 
 model_player_one = {
-    "png": "ship (8).png",
+    "png": "ship (3).png",
     "width": 40,
     "height": 40,
     "speed": 2,
@@ -21,10 +21,8 @@ model_player_one = {
 
 class Player(Sprite):
     def __init__(self):
-        self.all_players = pygame.sprite.Group()
         model = model_player_one
         new_player_sprite = Sprite(model)
-        self.all_players.add(new_player_sprite)
         super().__init__(model)
         self.pos = (WIDTH / 2, HEIGHT / 2)
         self.max_speed = model["max_speed"]
