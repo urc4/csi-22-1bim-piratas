@@ -20,6 +20,7 @@ class CannonBall(Sprite):
     def __init__(self, ship_parameters):
         model = model_cannon_ball_one
         model["width"] = model["height"] = ship_parameters["size"]
+        model["speed"] = ship_parameters["speed"]
         super().__init__(model)
         pos = ship_parameters["position"]
         self.angle = ship_parameters["angle"]

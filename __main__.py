@@ -67,7 +67,7 @@ while True:
                 boat.shoot_cannon()
             if event.key == K_DOWN and power_up == True:
                 size = 32
-                boat.shoot_cannon(32)
+                boat.shoot_cannon(32, 10)
                 power_up = False
         if event.type == KEYUP:
             is_pressed = False
