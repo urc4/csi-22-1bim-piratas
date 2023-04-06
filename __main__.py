@@ -1,10 +1,22 @@
 # TODO corrigir o funcionamento das teclas tipo pra ter melhor responsivividade
 
 import pygame
-from pygame.locals import QUIT, KEYDOWN, K_UP, K_LEFT, K_RIGHT, K_SPACE, KEYUP, K_DOWN
+from pygame.locals import (
+    QUIT,
+    KEYDOWN,
+    K_UP,
+    K_LEFT,
+    K_RIGHT,
+    K_SPACE,
+    KEYUP,
+    K_DOWN,
+)
 import sys
 from debug import debug
-from models import Player, EnemyBoat, EnemyPirate
+
+# from models import Player, EnemyBoat, EnemyPirate
+from player import Player
+from enemy import EnemyBoat, EnemyPirate
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
 
 # centro da surface eh no ponto 0,0
@@ -55,7 +67,7 @@ while True:
                 cb = boat.create_cannon_ball()
                 cannonball_sprites.add(cb)
             if event.key == K_DOWN and power_up == True:
-                size = 24
+                size = 32
                 cb = boat.create_cannon_ball(size)
                 cannonball_sprites.add(cb)
                 power_up = False
