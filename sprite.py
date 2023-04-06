@@ -3,7 +3,8 @@ import math
 from resources_utils import load_png, spawn_random
 from globals import WIDTH, HEIGHT
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
-from cannonball import CannonBall
+
+# from cannonball import CannonBall
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -25,7 +26,6 @@ class Sprite(pygame.sprite.Sprite):
         self.mass = model["density"] * model["width"] * model["height"]
 
         self.air_resistance_constant = 100
-        self.all_cannon_balls = pygame.sprite.Group()
 
     def rotate_image(self):
         if not (0 <= self.angle < 2 * math.pi):
@@ -51,6 +51,7 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.update(self.pos[0], self.pos[1], self.width, self.height)
         self.rotate_image()
         self.pos = self.switch_sides()
+        # essa linha que gera tudo isso
 
     def is_out_of_screen(self):
         if self.pos[0] > WIDTH + 2 * self.size or self.pos[0] < 0 - self.size:
@@ -91,14 +92,3 @@ class Sprite(pygame.sprite.Sprite):
 
         if self.speed != 0:
             self.speed += self.air_resistance
-
-    def shoot_cannon(self, size=8):
-        cannon_speed = 20
-        cannon_ang = self.angle
-        cannon_pos = (self.pos[0] + self.width / 2, self.pos[1] + self.height / 2)
-        new_cannon_ball = CannonBall(cannon_pos, cannon_ang, size, cannon_speed)
-        self.conserve_momentum(new_cannon_ball)
-        self.all_cannon_balls.add(new_cannon_ball)
-
-    def conserve_momentum(self, cannon_ball):
-        self.speed = self.speed - (cannon_ball.mass / self.mass) * cannon_ball.speed

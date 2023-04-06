@@ -47,7 +47,6 @@ pygame.display.flip()
 
 while True:
     clock.tick(FPS)
-    # count += 1
     scoreboard.tick()
 
     for event in pygame.event.get():

@@ -1,9 +1,9 @@
 import pygame
 import math
-import random
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
 from resources_utils import load_png, spawn_random
 from cannonball import CannonBall
+
 from sprite import Sprite
 
 model_player_one = {
@@ -22,8 +22,24 @@ model_player_one = {
 class Player(Sprite):
     def __init__(self):
         model = model_player_one
-        new_player_sprite = Sprite(model)
         super().__init__(model)
         self.pos = (WIDTH / 2, HEIGHT / 2)
         self.max_speed = model["max_speed"]
         self.angle = 3 * math.pi / 2
+        self.all_cannon_balls = pygame.sprite.Group()
+
+    def shoot_cannon(self, size=8):
+        ship_parameters = {}
+        # cannon_speed = 20
+        ship_parameters["angle"] = self.angle
+        ship_parameters["position"] = (
+            self.pos[0] + self.width / 2,
+            self.pos[1] + self.height / 2,
+        )
+        ship_parameters["size"] = size
+        new_cannon_ball = CannonBall(ship_parameters)
+        self.conserve_momentum(new_cannon_ball)
+        self.all_cannon_balls.add(new_cannon_ball)
+
+    def conserve_momentum(self, cannon_ball):
+        self.speed = self.speed - (cannon_ball.mass / self.mass) * cannon_ball.speed
