@@ -13,10 +13,9 @@ from pygame.locals import (
 )
 import sys
 from debug import debug
+from enemy import Enemies
 
-# from models import Player, EnemyBoat, EnemyPirate
 from player import Player
-from enemy import EnemyBoat, EnemyPirate
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
 
 # centro da surface eh no ponto 0,0
@@ -39,7 +38,9 @@ key_pressed = None
 power_up = False
 
 boat_sprite = pygame.sprite.RenderPlain(boat)
-enemy_sprites = pygame.sprite.RenderPlain()
+# enemy_sprites = pygame.sprite.RenderPlain()
+enemies = Enemies()
+enemy_sprites = enemies.all_enemies
 cannonball_sprites = pygame.sprite.RenderPlain()
 
 screen.blit(background, (0, 0))
@@ -99,12 +100,14 @@ while True:
     scoreboard = int(count / 60)
     debug(scoreboard)
     if scoreboard % 5 == 0:
-        new_enemy_pirate = EnemyPirate()
-        enemy_sprites.add(new_enemy_pirate)
+        # new_enemy_pirate = EnemyPirate()
+        # enemy_sprites.add(new_enemy_pirate)
+        enemies.create_enemy(2)
         count += 60
     if scoreboard % 10 == 0:
-        new_enemy_boat = EnemyBoat()
-        enemy_sprites.add(new_enemy_boat)
+        # new_enemy_boat = EnemyBoat()
+        # enemy_sprites.add(new_enemy_boat)
+        enemies.create_enemy(1)
         count += 60
     if scoreboard % 15 == 0:
         power_up = True
