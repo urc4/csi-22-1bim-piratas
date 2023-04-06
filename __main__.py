@@ -15,20 +15,17 @@ from pygame.locals import (
     K_DOWN,
 )
 import sys
-from debug import debug
 from enemy import Enemies
-
+from scoreboard import Scoreboard
 from player import Player
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
-
-# centro da surface eh no ponto 0,0
-# cuidado pra nao queberar o jogo pra ifcar indo e voltando no canot da tela
+from debug import debug
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Piratas da Guanabara")
 clock = pygame.time.Clock()
-count = 0
+scoreboard = Scoreboard()
 
 background = pygame.Surface(screen.get_size())
 background = background.convert()
@@ -41,10 +38,8 @@ power_up = False
 
 boat = Player()
 boat_sprite = pygame.sprite.RenderPlain(boat)
-# enemy_sprites = pygame.sprite.RenderPlain()
 enemies = Enemies()
 enemy_sprites = enemies.all_enemies
-# cannonball_sprites = pygame.sprite.RenderPlain()
 cannonball_sprites = boat.all_cannon_balls
 
 screen.blit(background, (0, 0))
@@ -52,7 +47,8 @@ pygame.display.flip()
 
 while True:
     clock.tick(FPS)
-    count += 1
+    # count += 1
+    scoreboard.tick()
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -98,20 +94,21 @@ while True:
     boat.all_cannon_balls.update()
 
     # gera, blit e update barcos inimigos:
-    scoreboard = int(count / 60)
-    debug(scoreboard)
-    if scoreboard % 5 == 0:
-        # new_enemy_pirate = EnemyPirate()
-        # enemy_sprites.add(new_enemy_pirate)
+    scoreboard.display()
+    if scoreboard.score % 5 == 0:
         enemies.create_new_enemy(2)
-        count += 60
-    if scoreboard % 10 == 0:
-        # new_enemy_boat = EnemyBoat()
-        # enemy_sprites.add(new_enemy_boat)
+        scoreboard.count += 60
+    if scoreboard.score % 10 == 0:
         enemies.create_new_enemy(1)
-        count += 60
-    if scoreboard % 15 == 0:
+        scoreboard.count += 60
+
+    if scoreboard.score % 15 == 0:
         power_up = True
+    if power_up == True:
+        debug("power up", 10, 100)
+    else:
+        debug("", 10, 100)
+
     for enemy in enemy_sprites:
         screen.blit(background, enemy.rect, enemy.rect)  # apaga antiga posicao da tela
     enemy_sprites.update()  # atualiza posicao no objeto
