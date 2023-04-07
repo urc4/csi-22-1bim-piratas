@@ -74,7 +74,8 @@ class Sprite(pygame.sprite.Sprite):
     def move(self, key_pressed):
         self.air_resistance = -self.air_resistance_constant * self.speed / self.mass
         if key_pressed == UP:
-            self.speed += self.accel + self.air_resistance
+            # self.speed += self.accel + self.air_resistance
+            self.speed += self.accel
             if self.speed > self.max_speed:
                 self.speed = self.max_speed
 
@@ -84,8 +85,8 @@ class Sprite(pygame.sprite.Sprite):
         if key_pressed == RIGHT:
             self.angle = (self.angle + self.omega) % (2 * math.pi)
 
-        # if self.speed != 0:
-        # self.speed += self.air_resistance
+        if self.speed != 0:
+            self.speed += self.air_resistance
 
     def move_unpressed(self):
         self.air_resistance = -self.air_resistance_constant * self.speed / self.mass
