@@ -10,7 +10,7 @@ model_player_one = {
     "png": "ship (3).png",
     "width": 40,
     "height": 40,
-    "speed": 2,
+    "speed": 0,
     "ang_offset": math.pi / 2,
     "max_speed": 6,
     "density": 5,

@@ -10,7 +10,7 @@ model_cannon_ball_one = {
     "speed": 20,
     "ang_offset": 0,
     "max_speed": 0,
-    "density": 1,
+    "density": 2,
     "acceleration": 0,
     "omega": 0,
 }

@@ -71,7 +71,7 @@ class Level:
         self.screen.blit(self.background, self.player.rect)
         for cannon_ball in self.player.all_cannon_balls:
             if cannon_ball.is_out_of_screen():
-                pass
+                self.player.all_cannon_balls.remove(cannon_ball)
             else:
                 self.screen.blit(self.background, cannon_ball.rect, cannon_ball.rect)
         for enemy in self.enemies.all_enemies:
