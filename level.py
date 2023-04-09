@@ -14,6 +14,7 @@ from pygame.locals import (
 )
 from debug import debug
 from scoreboard import Scoreboard
+from explosion import Explosion
 
 
 class Level:
@@ -32,6 +33,7 @@ class Level:
         self.key_pressed = None
         self.power_up = False
         self.scoreboard = Scoreboard()
+        self.explosions = pygame.sprite.Group()
 
     def press_key(self, event):
         if event.type == KEYDOWN:
@@ -84,16 +86,20 @@ class Level:
         self.destroy_enemies()
         self.player.all_cannon_balls.update()
         self.enemies.all_enemies.update()
+        self.explosions.update()
 
     def draw_sprites(self):
         self.player_sprite.draw(self.screen)
         self.player.all_cannon_balls.draw(self.screen)
         self.enemies.all_enemies.draw(self.screen)
+        self.explosions.draw(self.screen)
 
     def destroy_enemies(self):
         for cannon_ball in self.player.all_cannon_balls:
             for enemy in self.enemies.all_enemies:
                 if enemy.rect.colliderect(cannon_ball):
+                    new_explosion = Explosion(enemy.pos)
+                    self.explosions.add(new_explosion)
                     self.enemies.all_enemies.remove(enemy)
                     del enemy
                     # self.player.all_cannon_balls.remove(cannon_ball)
