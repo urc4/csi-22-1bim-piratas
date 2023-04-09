@@ -12,7 +12,7 @@ from pygame.locals import (
     KEYUP,
     K_DOWN,
 )
-
+from debug import debug
 from scoreboard import Scoreboard
 
 
@@ -78,7 +78,10 @@ class Level:
             self.screen.blit(self.background, enemy.rect, enemy.rect)
 
     def update_sprites(self):
-        self.player_sprite.update()
+        if self.player is not None:
+            self.player_sprite.update()
+        self.destroy_player()
+        self.destroy_enemies()
         self.player.all_cannon_balls.update()
         self.enemies.all_enemies.update()
 
@@ -86,3 +89,50 @@ class Level:
         self.player_sprite.draw(self.screen)
         self.player.all_cannon_balls.draw(self.screen)
         self.enemies.all_enemies.draw(self.screen)
+
+    def destroy_enemies(self):
+        for cannon_ball in self.player.all_cannon_balls:
+            for enemy in self.enemies.all_enemies:
+                if enemy.rect.colliderect(cannon_ball):
+                    self.enemies.all_enemies.remove(enemy)
+                    del enemy
+                    # self.player.all_cannon_balls.remove(cannon_ball)
+                    # ideia eh bola grandona nao ser destruida com contato
+                    # del cannon_ball
+
+    def destroy_player(self):
+        for enemy in self.enemies.all_enemies:
+            if enemy.rect.colliderect(self.player):
+                # corrigir hitbox
+                # del self.player
+                pass
+
+
+# ideia de codigo mais inteligivel aqui
+
+# class Level:
+#     def __init__(self):
+#         self.enemies = pygame.sprite.Group()
+#         self.cannon_balls = pygame.sprite.Group()
+
+#     def update_sprites(self):
+#         # Update sprites
+#         self.enemies.update()
+#         self.cannon_balls.update()
+
+#         # Check for collisions
+#         for enemy in self.enemies:
+#             for cannon_ball in self.cannon_balls:
+#                 if enemy.rect.colliderect(cannon_ball.rect):
+#                     # Destroy enemy
+#                     enemy.kill()
+#                     # Destroy cannon ball
+#                     cannon_ball.kill()
+
+#     def destroy_enemies(self):
+#         # Get a list of enemies and cannon balls that have collided
+#         collided_enemies = pygame.sprite.groupcollide(self.enemies, self.cannon_balls, True, True)
+
+#         # Destroy the collided enemies
+#         for enemy in collided_enemies.keys():
+#             enemy.kill()
