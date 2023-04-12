@@ -1,7 +1,6 @@
-import pygame
 import math
 import os.path
-from sprite import Sprite
+from .sprite import Sprite
 
 model_cannon_ball_one = {
     "png": os.path.join("PNG", "Retina", "Ship parts", "cannonBall.png"),

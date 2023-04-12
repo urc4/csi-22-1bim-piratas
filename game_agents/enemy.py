@@ -1,7 +1,7 @@
 import pygame
 import math
 import os.path
-from sprite import Sprite
+from .sprite import Sprite
 
 
 model_enemy_one = {

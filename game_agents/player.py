@@ -2,9 +2,8 @@ import pygame
 import math
 import os.path
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
-from resources_utils import load_png, spawn_random
-from cannonball import CannonBall
-from sprite import Sprite
+from .cannonball import CannonBall
+from .sprite import Sprite
 
 model_player_one = {
     "png": os.path.join("PNG", "Retina", "Ships", "ship (3).png"),

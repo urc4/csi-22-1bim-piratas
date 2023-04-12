@@ -1,9 +1,6 @@
-import pygame
 import math
 import os.path
-from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
-from resources_utils import load_png, spawn_random
-from sprite import Sprite
+from .sprite import Sprite
 
 model_explosion_one = {
     "png": os.path.join("PNG", "Retina", "Effects", "explosion1.png"),

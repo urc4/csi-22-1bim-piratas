@@ -1,9 +1,8 @@
 import pygame
-from enemy import Enemies
-from player import Player
-from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
+from game_agents.enemy import Enemies
+from game_agents.player import Player
+from globals import WIDTH, HEIGHT, UP, RIGHT, LEFT
 from pygame.locals import (
-    QUIT,
     KEYDOWN,
     K_UP,
     K_LEFT,
@@ -12,9 +11,8 @@ from pygame.locals import (
     KEYUP,
     K_DOWN,
 )
-from debug import debug
 from scoreboard import Scoreboard
-from explosion import Explosion
+from game_agents.explosion import Explosion
 
 
 class Level:
