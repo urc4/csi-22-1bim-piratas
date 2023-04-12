@@ -10,11 +10,9 @@ de gráficos em um ambiente 2D. O objetivo do projeto é desenvolver habilidades
 
 
 ## ⚙️ Pré-requisitos e instalação
-> Python 3 com uma instalação de PyGame. Os *sprites* usados podem ser baixados com os ``download_sprites.sh`` (Linux)
-ou ``download_sprites.bat`` (Windows com comando ``curl`` instalado), ou diretamente da fonte ([aqui](https://www.flaticon.com/free-icon/boat_1048357?term=boat&page=1&position=35&origin=search&related_id=1048357) e 
-[aqui](https://www.flaticon.com/free-icon/pirate-ship_7957562?term=pirate+boat&page=1&position=57&origin=search&related_id=7957562)),
-em cujo caso devem ser colocados em ``data/`` com  os nomes ``boat.png`` e ``pirate-ship.png`` resp.
-
+> Python 3 com uma instalação de PyGame. Para que o jogo funcione corretamente, descompacte o conteúdo de 
+``data/kenney_pirate-ack.zip`` diretamente em ``data/`` (usuários de Windows podem ter demudar o comportamento padrão do
+"Extrair tudo" para que o conteúdo seja extraído para ``data/`` e **não** para ``data/kenney_pirate-ack/``).
 ---
 
 ## 🦜 Tema
@@ -37,10 +35,6 @@ Este projeto foi realizado em colaboração com: Daniel Quintão(https://github.
 
 ## 🎨 Atribuições da arte usada
 
-You shall **not** use this repo to download those icons.
-To do so, see the original provider (e.g., https://www.flaticon.com/)
-
-* <a href="https://www.flaticon.com/free-icons/boat" title="boat icons">Boat icons created by Freepik - Flaticon</a>
-* <a href="https://www.flaticon.com/free-icons/pirate-ship" title="pirate ship icons">Pirate ship icons created by smashingstocks - Flaticon</a>
+Veja ``data/License.txt``
 
 ---

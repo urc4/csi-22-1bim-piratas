@@ -1,10 +1,10 @@
 import pygame
 import math
-
+import os.path
 from sprite import Sprite
 
 model_cannon_ball_one = {
-    "png": "cannonBall.png",
+    "png": os.path.join("PNG", "Retina", "Ship parts", "cannonBall.png"),
     "width": 8,
     "height": 8,
     "speed": 20,

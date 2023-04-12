@@ -1,10 +1,11 @@
 import pygame
 import math
+import os.path
 from sprite import Sprite
 
 
 model_enemy_one = {
-    "png": "ship (8).png",
+    "png": os.path.join("PNG", "Retina", "Ships", "ship (8).png"),
     "width": 40,
     "height": 40,
     "speed": 2,
@@ -15,7 +16,7 @@ model_enemy_one = {
 }
 
 model_enemy_two = {
-    "png": "dinghyLarge1.png",
+    "png": os.path.join("PNG", "Retina", "Ships", "dinghyLarge1.png"),
     "width": 15,
     "height": 20,
     "speed": 2.5,
