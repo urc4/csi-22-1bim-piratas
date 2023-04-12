@@ -27,8 +27,7 @@ class Level:
         self.enemies = Enemies()
         self.screen.blit(self.background, (0, 0))
         pygame.display.flip()
-        self.is_pressed = False
-        self.key_pressed = None
+        self.pressed_keys = set()
         self.power_up = False
         self.scoreboard = Scoreboard()
         self.explosions = pygame.sprite.Group()
@@ -36,22 +35,20 @@ class Level:
     def press_key(self, event):
         if event.type == KEYDOWN:
             if event.key == K_UP:
-                self.key_pressed = UP
-                self.is_pressed = True
+                self.pressed_keys.add(UP)
             if event.key == K_LEFT:
-                self.key_pressed = LEFT
-                self.is_pressed = True
+                self.pressed_keys.add(LEFT)
             if event.key == K_RIGHT:
-                self.key_pressed = RIGHT
-                self.is_pressed = True
+                self.pressed_keys.add(RIGHT)
             if event.key == K_SPACE:
                 self.player.shoot_cannon()
-            if event.key == K_DOWN and self.power_up == True:
-                size = 32
+            if event.key == K_DOWN and self.power_up:
                 self.player.shoot_cannon(32, 10)
                 self.power_up = False
         if event.type == KEYUP:
-            self.is_pressed = False
+            for k, code in zip([K_UP, K_LEFT, K_RIGHT], [UP, LEFT, RIGHT]):
+                if event.key == k and code in self.pressed_keys:
+                    self.pressed_keys.remove(code)
 
     def generate_enemies(self, score):
         if score % 5 == 0:
@@ -64,8 +61,8 @@ class Level:
             self.power_up = True
 
     def blit_sprites(self):
-        if self.is_pressed:
-            self.player.move(self.key_pressed)
+        if len(self.pressed_keys) > 0:
+            self.player.move(self.pressed_keys)
         else:
             self.player.move_unpressed()
         self.screen.blit(self.background, self.player.rect)
