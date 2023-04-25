@@ -13,6 +13,7 @@ from pygame.locals import (
     K_SPACE,
     KEYUP,
     K_DOWN,
+    K_RETURN
 )
 import sys
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
@@ -25,6 +26,17 @@ level = Level()
 pygame.display.flip()
 
 while True:
+    if level.game_over:  # entramos aqui apenas quando o jogador perde uma partida
+        level.display_game_over()
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN and event.key in [K_RETURN, K_SPACE]:
+                level = Level()
+        continue
+
     clock.tick(FPS)
     level.scoreboard.tick()
 
@@ -45,3 +57,4 @@ while True:
     level.draw_sprites()
 
     pygame.display.flip()
+

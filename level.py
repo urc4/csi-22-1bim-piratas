@@ -1,4 +1,5 @@
 import pygame
+from sys import stderr
 from game_agents.enemy import Enemies
 from game_agents.player import Player
 from globals import WIDTH, HEIGHT, UP, RIGHT, LEFT
@@ -13,6 +14,9 @@ from pygame.locals import (
 )
 from scoreboard import Scoreboard
 from game_agents.explosion import Explosion
+
+if not pygame.font:
+    print("Warning, fonts disabled", file=stderr)
 
 
 class Level:
@@ -31,6 +35,7 @@ class Level:
         self.power_up = False
         self.scoreboard = Scoreboard()
         self.explosions = pygame.sprite.Group()
+        self.game_over = False
 
     def press_key(self, event):
         if event.type == KEYDOWN:
@@ -43,7 +48,7 @@ class Level:
             if event.key == K_SPACE:
                 self.player.shoot_cannon()
             if event.key == K_DOWN and self.power_up:
-                self.player.shoot_cannon(32, 10)
+                self.player.shoot_cannon(special=True)
                 self.power_up = False
         if event.type == KEYUP:
             for k, code in zip([K_UP, K_LEFT, K_RIGHT], [UP, LEFT, RIGHT]):
@@ -60,7 +65,7 @@ class Level:
         if score % 15 == 0:
             self.power_up = True
 
-    def blit_sprites(self):
+    def blit_sprites(self):  # "apaga" a antiga posicao das sprites (na verdade sobrescreve com um pedaço do background)
         if len(self.pressed_keys) > 0:
             self.player.move(self.pressed_keys)
         else:
@@ -73,12 +78,15 @@ class Level:
                 self.screen.blit(self.background, cannon_ball.rect, cannon_ball.rect)
         for enemy in self.enemies.all_enemies:
             self.screen.blit(self.background, enemy.rect, enemy.rect)
+        for explosion in self.explosions:
+            self.screen.blit(self.background, explosion.rect, explosion.rect)
 
     def update_sprites(self):
         if self.player is not None:
             self.player_sprite.update()
         self.destroy_player()
         self.destroy_enemies()
+        self.destroy_explosions()
         self.player.all_cannon_balls.update()
         self.enemies.all_enemies.update()
         self.explosions.update()
@@ -91,23 +99,41 @@ class Level:
 
     def destroy_enemies(self):
         for cannon_ball in self.player.all_cannon_balls:
+            destroy_cannon_ball = False
             for enemy in self.enemies.all_enemies:
                 if enemy.rect.colliderect(cannon_ball):
                     new_explosion = Explosion(enemy.pos)
                     self.explosions.add(new_explosion)
                     self.enemies.all_enemies.remove(enemy)
                     del enemy
-                    # self.player.all_cannon_balls.remove(cannon_ball)
-                    # ideia eh bola grandona nao ser destruida com contato
-                    # del cannon_ball
+                    if not cannon_ball.special:  # destroy only normal/non-special cannon balls on collision
+                        destroy_cannon_ball = True
+            if destroy_cannon_ball:
+                self.player.all_cannon_balls.remove(cannon_ball)
+                del cannon_ball
 
     def destroy_player(self):
         for enemy in self.enemies.all_enemies:
-            if enemy.rect.colliderect(self.player):
-                # corrigir hitbox
-                # del self.player
-                pass
+            if enemy.rect.scale_by(0.6).colliderect(self.player.rect.scale_by(0.6)):
+                self.game_over = True
 
+    def destroy_explosions(self):
+        for explosion in self.explosions:
+            if explosion.finished:
+                self.explosions.remove(explosion)
+                del explosion
+
+    def display_game_over(self):
+        if pygame.font:
+            font = pygame.font.Font(None, 64)
+            text = font.render("GAME OVER", True, (245, 242, 66))
+            textpos = text.get_rect(centerx=self.background.get_width() / 2, centery=self.background.get_height() / 2)
+            self.screen.blit(text, textpos)
+            font = pygame.font.Font(None, 32)
+            text = font.render("PRESS ENTER OR SPACE TO PLAY AGAIN", True, (245, 242, 66))
+            textpos = text.get_rect(centerx=self.background.get_width() / 2,
+                                    centery=self.background.get_height() / 2 + 48)
+            self.screen.blit(text, textpos)
 
 # ideia de codigo mais inteligivel aqui
 
