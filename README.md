@@ -13,6 +13,10 @@ de gráficos em um ambiente 2D. O objetivo do projeto é desenvolver habilidades
 > Python 3 com uma instalação de PyGame. Para que o jogo funcione corretamente, descompacte o conteúdo de 
 ``data/kenney_pirate-ack.zip`` diretamente em ``data/`` (usuários de Windows podem ter demudar o comportamento padrão do
 "Extrair tudo" para que o conteúdo seja extraído para ``data/`` e **não** para ``data/kenney_pirate-ack/``).
+> 
+> Em seguida baixa a [imagem de liuzishan no Freepik](https://br.freepik.com/fotos-gratis/pintura-digital-de-antigos-navios-de-guerra-viajando-em-mares-agitados_14402173.htm#query=guerra%20de%20navios&position=1&from_view=search&track=robertav1_2_sidr) como ``data/PNG/Retina/Menu/background.jpg``.
+> 
+> Criamos o script ``data/setup_data.sh`` para facilitar estes procedimentos (precisa de ``curl`` instalado)
 ---
 
 ## 🦜 Tema
@@ -35,6 +39,6 @@ Este projeto foi realizado em colaboração com: Daniel Quintão(https://github.
 
 ## 🎨 Atribuições da arte usada
 
-Veja ``data/License.txt``
+Veja ``data/License.txt``. Para a imagem de fundo do menu, temos uma [imagem de liuzishan no Freepik](https://br.freepik.com/fotos-gratis/pintura-digital-de-antigos-navios-de-guerra-viajando-em-mares-agitados_14402173.htm#query=guerra%20de%20navios&position=1&from_view=search&track=robertav1_2_sidr)
 
 ---
