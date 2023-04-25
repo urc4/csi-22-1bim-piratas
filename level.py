@@ -125,14 +125,22 @@ class Level:
 
     def display_game_over(self):
         if pygame.font:
+            # "GAME OVER" message:
             font = pygame.font.Font(None, 64)
             text = font.render("GAME OVER", True, (245, 242, 66))
             textpos = text.get_rect(centerx=self.background.get_width() / 2, centery=self.background.get_height() / 2)
             self.screen.blit(text, textpos)
+            # score:
+            font = pygame.font.Font(None, 32)
+            text = font.render(f"FINAL SCORE: {self.scoreboard.score}", True, (245, 242, 66))
+            textpos = text.get_rect(centerx=self.background.get_width() / 2,
+                                    centery=self.background.get_height() / 2 + 48)
+            self.screen.blit(text, textpos)
+            # restart message:
             font = pygame.font.Font(None, 32)
             text = font.render("PRESS ENTER OR SPACE TO PLAY AGAIN", True, (245, 242, 66))
             textpos = text.get_rect(centerx=self.background.get_width() / 2,
-                                    centery=self.background.get_height() / 2 + 48)
+                                    centery=self.background.get_height() / 2 + 80)
             self.screen.blit(text, textpos)
 
 # ideia de codigo mais inteligivel aqui
