@@ -60,7 +60,7 @@ class Level:
         if score % 15 == 0:
             self.power_up = True
 
-    def blit_sprites(self):
+    def blit_sprites(self):  # "apaga" a antiga posicao das sprites (na verdade sobrescreve com um pedaço do background)
         if len(self.pressed_keys) > 0:
             self.player.move(self.pressed_keys)
         else:
@@ -73,12 +73,15 @@ class Level:
                 self.screen.blit(self.background, cannon_ball.rect, cannon_ball.rect)
         for enemy in self.enemies.all_enemies:
             self.screen.blit(self.background, enemy.rect, enemy.rect)
+        for explosion in self.explosions:
+            self.screen.blit(self.background, explosion.rect, explosion.rect)
 
     def update_sprites(self):
         if self.player is not None:
             self.player_sprite.update()
         self.destroy_player()
         self.destroy_enemies()
+        self.destroy_explosions()
         self.player.all_cannon_balls.update()
         self.enemies.all_enemies.update()
         self.explosions.update()
@@ -108,6 +111,11 @@ class Level:
                 # del self.player
                 pass
 
+    def destroy_explosions(self):
+        for explosion in self.explosions:
+            if explosion.finished:
+                self.explosions.remove(explosion)
+                del explosion
 
 # ideia de codigo mais inteligivel aqui
 
