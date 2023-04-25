@@ -48,7 +48,7 @@ class Level:
             if event.key == K_SPACE:
                 self.player.shoot_cannon()
             if event.key == K_DOWN and self.power_up:
-                self.player.shoot_cannon(32, 10)
+                self.player.shoot_cannon(special=True)
                 self.power_up = False
         if event.type == KEYUP:
             for k, code in zip([K_UP, K_LEFT, K_RIGHT], [UP, LEFT, RIGHT]):
@@ -99,15 +99,18 @@ class Level:
 
     def destroy_enemies(self):
         for cannon_ball in self.player.all_cannon_balls:
+            destroy_cannon_ball = False
             for enemy in self.enemies.all_enemies:
                 if enemy.rect.colliderect(cannon_ball):
                     new_explosion = Explosion(enemy.pos)
                     self.explosions.add(new_explosion)
                     self.enemies.all_enemies.remove(enemy)
                     del enemy
-                    # self.player.all_cannon_balls.remove(cannon_ball)
-                    # ideia eh bola grandona nao ser destruida com contato
-                    # del cannon_ball
+                    if not cannon_ball.special:  # destroy only normal/non-special cannon balls on collision
+                        destroy_cannon_ball = True
+            if destroy_cannon_ball:
+                self.player.all_cannon_balls.remove(cannon_ball)
+                del cannon_ball
 
     def destroy_player(self):
         for enemy in self.enemies.all_enemies:
