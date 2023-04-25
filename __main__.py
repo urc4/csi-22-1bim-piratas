@@ -17,12 +17,16 @@ from pygame.locals import (
 import sys
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
 from level import Level
+from menu import Menu
 
 pygame.init()
 clock = pygame.time.Clock()
 level = Level()
+menu = Menu()
 
 pygame.display.flip()
+
+menu.display_menu()
 
 while True:
     clock.tick(FPS)
