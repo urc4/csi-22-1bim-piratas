@@ -114,7 +114,7 @@ class Level:
 
     def destroy_player(self):
         for enemy in self.enemies.all_enemies:
-            if enemy.rect.colliderect(self.player):
+            if enemy.rect.scale_by(0.6).colliderect(self.player.rect.scale_by(0.6)):
                 self.game_over = True
 
     def destroy_explosions(self):
