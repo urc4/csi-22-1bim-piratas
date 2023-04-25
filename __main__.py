@@ -48,12 +48,12 @@ while True:
         # usar pygame.joystick
         # permitir atirar e mover ao mesmo tempo assim como ir pra frente e girar
 
-    level.scoreboard.display()
     level.generate_enemies()
-
     level.blit_sprites()
     level.update_sprites()
     level.draw_sprites()
+    level.scoreboard.display()
+
 
     pygame.display.flip()
 
