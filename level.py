@@ -1,4 +1,5 @@
 import pygame
+from sys import stderr
 from game_agents.enemy import Enemies
 from game_agents.player import Player
 from globals import WIDTH, HEIGHT, UP, RIGHT, LEFT
@@ -13,6 +14,9 @@ from pygame.locals import (
 )
 from scoreboard import Scoreboard
 from game_agents.explosion import Explosion
+
+if not pygame.font:
+    print("Warning, fonts disabled", file=stderr)
 
 
 class Level:
@@ -31,6 +35,7 @@ class Level:
         self.power_up = False
         self.scoreboard = Scoreboard()
         self.explosions = pygame.sprite.Group()
+        self.game_over = False
 
     def press_key(self, event):
         if event.type == KEYDOWN:
@@ -107,15 +112,20 @@ class Level:
     def destroy_player(self):
         for enemy in self.enemies.all_enemies:
             if enemy.rect.colliderect(self.player):
-                # corrigir hitbox
-                # del self.player
-                pass
+                self.game_over = True
 
     def destroy_explosions(self):
         for explosion in self.explosions:
             if explosion.finished:
                 self.explosions.remove(explosion)
                 del explosion
+
+    def display_game_over(self):
+        if pygame.font:
+            font = pygame.font.Font(None, 64)
+            text = font.render("GAME OVER", True, (245, 242, 66))
+            textpos = text.get_rect(centerx=self.background.get_width() / 2, centery=self.background.get_height() / 2)
+            self.screen.blit(text, textpos)
 
 # ideia de codigo mais inteligivel aqui
 

@@ -44,4 +44,16 @@ while True:
     level.update_sprites()
     level.draw_sprites()
 
+    if level.game_over:
+        break
+
     pygame.display.flip()
+
+if level.game_over:
+    level.display_game_over()
+    pygame.display.flip()
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
