@@ -1,4 +1,3 @@
-# TODO corrigir o funcionamento das teclas tipo pra ter melhor responsivividade
 # mudancas para melhoria da gameplay: rotacionar e driftar, so mudar velcoidade apos presiionar K_UP
 # carregar o canhao especial
 
@@ -50,7 +49,7 @@ while True:
         # permitir atirar e mover ao mesmo tempo assim como ir pra frente e girar
 
     level.scoreboard.display()
-    level.generate_enemies(level.scoreboard.score)
+    level.generate_enemies()
 
     level.blit_sprites()
     level.update_sprites()

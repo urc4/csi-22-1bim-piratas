@@ -50,19 +50,20 @@ class Level:
             if event.key == K_DOWN and self.power_up:
                 self.player.shoot_cannon(special=True)
                 self.power_up = False
+                self.scoreboard.power_up_counter = 0
         if event.type == KEYUP:
             for k, code in zip([K_UP, K_LEFT, K_RIGHT], [UP, LEFT, RIGHT]):
                 if event.key == k and code in self.pressed_keys:
                     self.pressed_keys.remove(code)
 
-    def generate_enemies(self, score):
-        if score % 5 == 0:
+    def generate_enemies(self):
+        if self.scoreboard.score % 5 == 0:
             self.enemies.create_new_enemy(2)
             self.scoreboard.count += 60
-        if score % 10 == 0:
+        if self.scoreboard.score % 10 == 0:
             self.enemies.create_new_enemy(1)
             self.scoreboard.count += 60
-        if score % 15 == 0:
+        if self.scoreboard.power_up_counter == 900:
             self.power_up = True
 
     def blit_sprites(self):  # "apaga" a antiga posicao das sprites (na verdade sobrescreve com um pedaço do background)
