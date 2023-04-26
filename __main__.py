@@ -1,4 +1,3 @@
-# TODO corrigir o funcionamento das teclas tipo pra ter melhor responsivividade
 # mudancas para melhoria da gameplay: rotacionar e driftar, so mudar velcoidade apos presiionar K_UP
 # carregar o canhao especial
 
@@ -13,6 +12,7 @@ from pygame.locals import (
     K_SPACE,
     KEYUP,
     K_DOWN,
+    K_RETURN
 )
 import sys
 import os
@@ -37,6 +37,17 @@ if os.path.isfile('data/Audio/background.mp3'):
     background_music.play()
 
 while True:
+    if level.game_over:  # entramos aqui apenas quando o jogador perde uma partida
+        level.display_game_over()
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN and event.key in [K_RETURN, K_SPACE]:
+                level = Level()
+        continue
+
     clock.tick(FPS)
     level.scoreboard.tick()
 
@@ -49,11 +60,12 @@ while True:
         # usar pygame.joystick
         # permitir atirar e mover ao mesmo tempo assim como ir pra frente e girar
 
-    level.scoreboard.display()
-    level.generate_enemies(level.scoreboard.score)
-
+    level.generate_enemies()
     level.blit_sprites()
     level.update_sprites()
     level.draw_sprites()
+    level.scoreboard.display()
+
 
     pygame.display.flip()
+

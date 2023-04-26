@@ -16,7 +16,7 @@ model_cannon_ball_one = {
 
 
 class CannonBall(Sprite):
-    def __init__(self, ship_parameters):
+    def __init__(self, ship_parameters, special=False):
         model = model_cannon_ball_one
         model["width"] = model["height"] = ship_parameters["size"]
         model["speed"] = ship_parameters["speed"]
@@ -25,6 +25,7 @@ class CannonBall(Sprite):
         self.angle = ship_parameters["angle"]
         self.size = ship_parameters["size"]
         self.pos = (pos[0] - self.size / 2, pos[1] - self.size / 2)
+        self.special = special
 
     def update(self):
         self.pos = (

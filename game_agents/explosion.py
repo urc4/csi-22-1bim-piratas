@@ -1,3 +1,4 @@
+import pygame.transform
 import math
 import os.path
 from .sprite import Sprite
@@ -20,3 +21,16 @@ class Explosion(Sprite):
         model = model_explosion_one
         super().__init__(model)
         self.pos = pos
+        self.finished = False
+
+    def update(self):
+        # super().update()
+        if self.width < 50:
+            self.width *= 1.3
+            self.height *= 1.3
+            self.image = pygame.transform.scale(self.image, (self.width, self.height))
+            # center = self.rect.center
+            # self.rect = self.image.get_rect(center=center)
+            self.rect.update(self.pos[0] - self.width / 2, self.pos[1] - self.height / 2, self.width, self.height)
+        else:
+            self.finished = True  # flag to be removed from explosion sprites group

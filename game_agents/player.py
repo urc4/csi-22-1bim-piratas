@@ -29,17 +29,17 @@ class Player(Sprite):
         self.cannon_sound = pygame.mixer.Sound('data/Audio/cannon.mp3') #Som aqui
         self.cannon_sound.set_volume(0.3)
         #explosion_sound = pygame.mixer.Sound('data/Audio/explosion.mp3') #Som aqui
-        
-    def shoot_cannon(self, size=8, speed=20):
+
+    def shoot_cannon(self, special=False):
         ship_parameters = {}
         ship_parameters["angle"] = self.angle
         ship_parameters["position"] = (
             self.pos[0] + self.width / 2,
             self.pos[1] + self.height / 2,
         )
-        ship_parameters["size"] = size
-        ship_parameters["speed"] = speed
-        new_cannon_ball = CannonBall(ship_parameters)
+        ship_parameters["size"] = 32 if special else 8
+        ship_parameters["speed"] = 10 if special else 20
+        new_cannon_ball = CannonBall(ship_parameters, special)
         self.conserve_momentum(new_cannon_ball)
         self.all_cannon_balls.add(new_cannon_ball)
         self.cannon_sound.play()
