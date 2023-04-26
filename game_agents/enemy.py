@@ -1,3 +1,6 @@
+""" Holds classes SingleEnemy and Enemies
+
+"""
 import pygame
 import math
 import os.path
@@ -32,12 +35,17 @@ model_enemy_two = {
 # could potentially add enemies that turn
 
 class SingleEnemy(Sprite):
+    """Enemy boat, of type 1 (big, slow, 2 shots to destroy) or 2 (small, fast, 1 shot to destroy)"""
     def __init__(self, model):
         super().__init__(model)
         self.type = model["type"]
         self.lives = 2 if model["type"] == 1 else 1  # barco type 1 precisa de 2 tiros de canhao para explodir
 
     def change_image(self):
+        """Update type 1 boat art (technically, a Surface  object) to indicate it received the first shot
+
+        :return:
+        """
         self.image, self.rect = load_png(os.path.join("PNG", "Retina", "Ships", "ship (14).png"))
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.image = pygame.transform.rotate(self.image, 90)
@@ -46,10 +54,16 @@ class SingleEnemy(Sprite):
 
 
 class Enemies:
+    """Collection of enemy boats"""
     def __init__(self):
         self.all_enemies = pygame.sprite.Group()
 
     def create_new_enemy(self, type):
+        """ Create enemy boat
+
+        :param type: int (1 or 2)
+        :return: None
+        """
         if type == 1:
             model = model_enemy_one
         elif type == 2:

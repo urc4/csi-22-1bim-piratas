@@ -1,3 +1,6 @@
+""" Holds class Explosion
+
+"""
 import pygame.transform
 import math
 import os.path
@@ -17,6 +20,7 @@ model_explosion_one = {
 
 
 class Explosion(Sprite):
+    """Explosion"""
     def __init__(self, pos):
         model = model_explosion_one
         super().__init__(model)

@@ -1,3 +1,6 @@
+""" Holds class Player
+
+"""
 import pygame
 import math
 import os.path
@@ -19,6 +22,7 @@ model_player_one = {
 
 
 class Player(Sprite):
+    """Player's boat"""
     def __init__(self):
         model = model_player_one
         super().__init__(model)
@@ -31,6 +35,11 @@ class Player(Sprite):
         #explosion_sound = pygame.mixer.Sound('data/Audio/explosion.mp3') #Som aqui
 
     def shoot_cannon(self, special=False):
+        """Shoot new cannonball
+
+        :param special: bool
+        :return: None
+        """
         ship_parameters = {}
         ship_parameters["angle"] = self.angle
         ship_parameters["position"] = (
@@ -45,4 +54,9 @@ class Player(Sprite):
         self.cannon_sound.play()
 
     def conserve_momentum(self, cannon_ball):
+        """utility for making movements more realistic upon cannonball shot
+
+        :param cannon_ball: Cannonball
+        :return: None
+        """
         self.speed = self.speed - (cannon_ball.mass / self.mass) * cannon_ball.speed
