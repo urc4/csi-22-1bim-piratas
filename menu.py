@@ -174,7 +174,7 @@ class Menu:
         """
         pause_menu_figures = {
             'resume': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (400, 60)),
-            'help': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (400, 60)),
+            'help': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (350, 60)),
             'exit': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (300, 60)),
         }
         if os.path.isfile('data/Audio/background.mp3'):
@@ -196,7 +196,7 @@ class Menu:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if 405 <= event.pos[0] <= 595 and 250 <= event.pos[1] <= 290:
+                    if 350 <= event.pos[0] <= 650 and 250 <= event.pos[1] <= 290:
                         screen.blit(self.background,(0,0))
                         pygame.display.update()
                         if os.path.isfile('data/Audio/background.mp3'):
@@ -204,7 +204,7 @@ class Menu:
                         return
                     elif 380 <= event.pos[0] <= 620 and 380 <= event.pos[1] <= 420:
                         self.help_menu()
-                    elif 335 <= event.pos[0] <= 665 and 530 <= event.pos[1] <= 570:
+                    elif 390 <= event.pos[0] <= 610 and 530 <= event.pos[1] <= 570:
                         pygame.quit()
                         sys.exit()
 
@@ -212,20 +212,18 @@ class Menu:
             screen.blit(background,(0,0))
             title_rect = title.get_rect(center=(WIDTH // 2, 100))
             screen.blit(title, title_rect)
-            ## score_info_rect = score_info.get_rect(center=(WIDTH // 2, 270))
-            ##screen.blit(score_info, score_info_rect)
 
-            resume_rect = resume.get_rect(center=(WIDTH // 2, 320))
+            resume_rect = resume.get_rect(center=(WIDTH // 2, 270))
             if resume_rect.collidepoint(pygame.mouse.get_pos()):
                 screen.blit(pause_menu_figures['resume'], (resume_rect.x - 50, resume_rect.y))
             screen.blit(resume, resume_rect)
 
-            help_rect = help.get_rect(center=(WIDTH // 2, 320))
+            help_rect = help.get_rect(center=(WIDTH // 2, 400))
             if help_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(pause_menu_figures['help'], (help_rect.x - 50, help_rect.y))
+                screen.blit(pause_menu_figures['help'], (help_rect.x - 50, help_rect.y - 8))
             screen.blit(help, help_rect)
 
-            exit_rect = exit.get_rect(center=(WIDTH // 2, 530))
+            exit_rect = exit.get_rect(center=(WIDTH // 2, 550))
             if exit_rect.collidepoint(pygame.mouse.get_pos()):
                 screen.blit(pause_menu_figures['exit'], (exit_rect.x - 45, exit_rect.y))
             screen.blit(exit, exit_rect)
