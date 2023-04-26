@@ -25,7 +25,7 @@ model_enemy_two = {
     "png": os.path.join("PNG", "Retina", "Ships", "dinghyLarge1.png"),
     "width": 15,
     "height": 20,
-    "speed": 2.5,
+    "speed": 3,
     "ang_offset": math.pi / 2,
     "density": 1,
     "acceleration": 0.1,
