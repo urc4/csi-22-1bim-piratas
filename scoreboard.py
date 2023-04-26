@@ -53,7 +53,11 @@ class Scoreboard:
             display_surface.blit(text, textpos)
             pygame.draw.rect(display_surface, (135, 206, 250), self.fullloadbar)  # overwrite with background color
             pygame.draw.rect(display_surface, LIGHT_BROWN, loadbar)
-
+        # remind of pause button
+        text = font.render(f"[P] - pause game", True, DARK_BROWN)
+        textpos = text.get_rect(topleft=(800, 10))
+        pygame.draw.rect(display_surface, (135, 206, 250), textpos)  # overwrite with background color
+        display_surface.blit(text, textpos)
 
     def increase_difficulty(self):
         """ unused
