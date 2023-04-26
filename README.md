@@ -10,7 +10,7 @@ de gráficos em um ambiente 2D. O objetivo do projeto é desenvolver habilidades
 
 
 ## ⚙️ Pré-requisitos e instalação
-> Python 3 com uma instalação de PyGame. Para que o jogo funcione corretamente, descompacte o conteúdo de 
+> Python 3 com uma instalação de PyGame (**>= 2.3.0**, testado com versão 2.3.0). Para que o jogo funcione corretamente, descompacte o conteúdo de 
 ``data/kenney_pirate-pack.zip`` diretamente em ``data/`` (usuários de Windows podem ter demudar o comportamento padrão do
 "Extrair tudo" para que o conteúdo seja extraído para ``data/`` e **não** para ``data/kenney_pirate-ack/``).
 > 
