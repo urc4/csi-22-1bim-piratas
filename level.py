@@ -104,16 +104,14 @@ class Level:
 
         :return: None
         """
-        if self.scoreboard.score % max(2, 5 // self.enemy_generation_rate) == 0:
+        if self.scoreboard.count % 120 == 0:
             self.enemies.create_new_enemy(2)
-            self.scoreboard.count += 60
-        if self.scoreboard.score % max(2, 10 // self.enemy_generation_rate) == 0:
+        if self.scoreboard.count % max(180, 600 // self.enemy_generation_rate) == 0:
             self.enemies.create_new_enemy(1)
-            self.scoreboard.count += 60
         if self.scoreboard.power_up_counter == 900:
             self.power_up = True
         if self.scoreboard.count % 300 == 0 and self.enemy_generation_rate < 4:
-            self.enemy_generation_rate += 1
+            self.enemy_generation_rate += 0.5
 
     def change_background(self):
         """ Make ocean waves "move" in background and update self.background accordingly
