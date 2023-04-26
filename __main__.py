@@ -26,7 +26,10 @@ menu = Menu()
 
 pygame.display.flip()
 
-menu.display_menu()
+background_music = pygame.mixer.Sound('data/Audio/background.mp3') #som aqui
+background_music.set_volume(0.5) #som aqui
+menu.main_menu()
+background_music.play()
 
 while True:
     clock.tick(FPS)
