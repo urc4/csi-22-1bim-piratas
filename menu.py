@@ -1,3 +1,6 @@
+""" Holds Menu class
+
+"""
 import pygame
 from globals import WIDTH, HEIGHT, UP, RIGHT, LEFT
 from pygame.locals import (
@@ -13,6 +16,9 @@ from pygame.locals import (
 
 # arrumar atribuições de tamanho de tela, cores e posições para como padronizado em level.py
 class Menu:
+    """ class for creating and displaying menu
+
+    """
     def __init__(self, background=None):
         if background:
             self.background = background
@@ -21,6 +27,10 @@ class Menu:
             self.background = pygame.transform.scale(background, (WIDTH + 130, HEIGHT))
 
     def main_menu(self):
+        """ displays and manages main menu when game starts running
+
+        :return: None
+        """
         screen = pygame.display.set_mode((WIDTH,HEIGHT))   # set the menu screen size
         font = pygame.font.SysFont('Arial',50)
         title = font.render('Piratas da Guanabara', True, 'Gray')
@@ -61,6 +71,10 @@ class Menu:
             pygame.display.update()
 
     def help_menu(self):
+        """ Displays and manage help menu teaching how to play the game
+
+        :return: None
+        """
         screen = pygame.display.set_mode((WIDTH,HEIGHT))   # set the menu screen size
         font = pygame.font.SysFont('Arial',50)
         title = font.render('Help', True, 'White')
@@ -93,6 +107,10 @@ class Menu:
             pygame.display.update()
     
     def pause_menu(self):
+        """ Displays and manages pause menu that user can access anytime during gameplay
+
+        :return: None
+        """
         screen = pygame.display.set_mode((WIDTH,HEIGHT))   # set the menu screen size
         font = pygame.font.SysFont('Arial',50)
         title = font.render('Pause menu', True, 'White')

@@ -1,3 +1,6 @@
+""" This module contains some miscellaneous utilities used by many other modules
+
+"""
 import os
 import pygame
 import random
@@ -6,7 +9,10 @@ from globals import WIDTH, HEIGHT
 
 
 def load_png(name):
-    """Load image and return image object"""
+    """Load image and return image object
+
+    :return: Surface, Rect
+    """
     fullname = os.path.join("data", name)
     try:
         image = pygame.image.load(fullname)
@@ -21,10 +27,20 @@ def load_png(name):
 
 
 def get_random_angle(min_ang, max_ang):
+    """ Get a random angle
+
+    :param min_ang: float
+    :param max_ang: float
+    :return: float
+    """
     return min_ang + random.random() * (max_ang - min_ang)
 
 
 def spawn_random():
+    """ Get random position and angle e.g. for a new enemy boat
+
+    :return: (float, float), float (we may get an int instead of float somewhere, e.g. (int, float), float)
+    """
     border = math.floor(random.random() * 4)
     if border == 0:  # UP
         ang = get_random_angle(0, math.pi)

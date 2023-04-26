@@ -1,3 +1,6 @@
+""" Holds our class Sprite which inherits form pygame.sprite.Sprite
+
+"""
 import pygame
 import math
 from resources_utils import load_png, spawn_random
@@ -8,7 +11,12 @@ from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
 
 
 class Sprite(pygame.sprite.Sprite):
+    """Custom child class of pygame.sprite.Sprite with added utilities for initializing and updates our sprites"""
     def __init__(self, model):
+        """Initializes an  object from specifications
+
+        :param model: dict
+        """
         pygame.sprite.Sprite.__init__(self)
         self.width, self.height = model["width"], model["height"]
         self.image, self.rect = load_png(model["png"])
@@ -28,6 +36,10 @@ class Sprite(pygame.sprite.Sprite):
         self.air_resistance_constant = 100
 
     def rotate_image(self):
+        """ Rotate the object's Surface
+
+        :return: Note
+        """
         if not (0 <= self.angle < 2 * math.pi):
             self.angle %= 2 * math.pi  # obs: x % y >= 0 se y > 0 (diferente de C e C++)
         if math.pi / 2 <= self.angle < 3 * math.pi / 2:
@@ -44,6 +56,10 @@ class Sprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=center)
 
     def update(self):
+        """ Update position and angle of object's Surface and rectangle
+
+        :return: None
+        """
         self.pos = (
             self.pos[0] + self.speed * math.cos(self.angle),
             self.pos[1] + self.speed * math.sin(self.angle),
@@ -54,6 +70,10 @@ class Sprite(pygame.sprite.Sprite):
         # essa linha que gera tudo isso
 
     def is_out_of_screen(self):
+        """Check if object is out of game screen boundaries
+
+        :return: bool
+        """
         if self.pos[0] > WIDTH + 2 * self.size or self.pos[0] < 0 - self.size:
             return True
         elif self.pos[1] > HEIGHT + 2 * self.size or self.pos[1] < 0 - self.size:
@@ -61,6 +81,10 @@ class Sprite(pygame.sprite.Sprite):
         return False
 
     def switch_sides(self):
+        """Allows implementing infinite screen effect by computing new position of object on the other side
+
+        :return: (float/int, float/int)
+        """
         if self.pos[0] > WIDTH:
             self.pos = (0, self.pos[1])
         elif self.pos[0] < 0:
@@ -72,6 +96,11 @@ class Sprite(pygame.sprite.Sprite):
         return self.pos
 
     def move(self, pressed_keys):
+        """Update speed and angle according to basic Physics and user events
+
+        :param pressed_keys:
+        :return: None
+        """
         self.air_resistance = -self.air_resistance_constant * self.speed / self.mass
         if UP in pressed_keys:
             # self.speed += self.accel + self.air_resistance
@@ -89,6 +118,10 @@ class Sprite(pygame.sprite.Sprite):
             self.speed += self.air_resistance
 
     def move_unpressed(self):
+        """Manage movement when user releases the key of moving forward
+
+        :return: None
+        """
         self.air_resistance = -self.air_resistance_constant * self.speed / self.mass
 
         if self.speed != 0:

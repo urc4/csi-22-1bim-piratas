@@ -1,5 +1,6 @@
-# mudancas para melhoria da gameplay: rotacionar e driftar, so mudar velcoidade apos presiionar K_UP
-# carregar o canhao especial
+"""Entrypoint to run the game. You want to execute it :)
+
+"""
 
 
 import pygame

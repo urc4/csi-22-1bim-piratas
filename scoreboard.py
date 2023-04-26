@@ -1,7 +1,13 @@
+"""Holds Scoreboard class
+
+"""
 import pygame
 
 
 class Scoreboard:
+    """Class responsible for tracking and displaying punctuation and "Special Cannonball" loading bar
+
+    """
     def __init__(self):
         self.count = 0
         self.score = 0
@@ -9,11 +15,19 @@ class Scoreboard:
         self.fullloadbar = pygame.Rect(400, 13, 900 // 10, 15)
 
     def tick(self):
+        """ update "inner clock", score, and "Special Cannonball" charge
+
+        :return: None
+        """
         self.count += 1
         self.score = int(self.count / 60)
         self.power_up_counter = min(900, self.power_up_counter + 1)
 
     def display(self):
+        """ Display scoreboard and auxiliary info
+
+        :return: None
+        """
         display_surface = pygame.display.get_surface()
         font = pygame.font.Font(None, 30)
         LIGHT_BROWN = (156, 152, 60)
@@ -42,4 +56,8 @@ class Scoreboard:
 
 
     def increase_difficulty(self):
+        """ unused
+
+        :return: None
+        """
         pass
