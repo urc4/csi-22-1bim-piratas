@@ -231,32 +231,3 @@ class Level:
             textpos = text.get_rect(centerx=self.background.get_width() / 2,
                                     centery=self.background.get_height() / 2 + 80)
             self.screen.blit(text, textpos)
-
-# ideia de codigo mais inteligivel aqui
-
-# class Level:
-#     def __init__(self):
-#         self.enemies = pygame.sprite.Group()
-#         self.cannon_balls = pygame.sprite.Group()
-
-#     def update_sprites(self):
-#         # Update sprites
-#         self.enemies.update()
-#         self.cannon_balls.update()
-
-#         # Check for collisions
-#         for enemy in self.enemies:
-#             for cannon_ball in self.cannon_balls:
-#                 if enemy.rect.colliderect(cannon_ball.rect):
-#                     # Destroy enemy
-#                     enemy.kill()
-#                     # Destroy cannon ball
-#                     cannon_ball.kill()
-
-#     def destroy_enemies(self):
-#         # Get a list of enemies and cannon balls that have collided
-#         collided_enemies = pygame.sprite.groupcollide(self.enemies, self.cannon_balls, True, True)
-
-#         # Destroy the collided enemies
-#         for enemy in collided_enemies.keys():
-#             enemy.kill()
