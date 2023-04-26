@@ -10,9 +10,9 @@ from pygame.locals import (
     K_DOWN,
 )
 
+#arrumar atribuições de tamanho de tela, cores e posições para como padronizado em level.py
 class Menu:
-
-    def display_menu(self):
+    def main_menu(self):
         screen = pygame.display.set_mode((WIDTH,HEIGHT))   # set the menu screen size
         font = pygame.font.SysFont('Arial',50)
         title = font.render('Piratas da Guanabara', True, 'Gray')
@@ -86,4 +86,38 @@ class Menu:
             screen.blit(back, back_rect)
 
             pygame.display.update()
+    
+    def pause_menu(self):
+        screen = pygame.display.set_mode((WIDTH,HEIGHT))   # set the menu screen size
+        font = pygame.font.SysFont('Arial',50)
+        title = font.render('Pause menu', True, 'White')
+        font = pygame.font.SysFont('Arial', 36)
+        score_info = font.render('Current score: ...', True, 'White') #botar score aqui
+        back = font.render('Back to game', True, 'White')
+
+        background = pygame.image.load('data/PNG/Retina/Menu/background.jpg')
+        background = pygame.transform.scale(background, (WIDTH+130,HEIGHT))
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if 410 <= event.pos[0] <= 590 and 350 <= event.pos[1] <= 390:
+                        screen.fill((135, 206, 250))
+                        pygame.display.update()
+                        return
+
+            screen.fill((0, 0, 0))
+            screen.blit(background,(0,0))
+            title_rect = title.get_rect(center=(WIDTH // 2, 100))
+            screen.blit(title, title_rect)
+            score_info_rect = score_info.get_rect(center=(WIDTH // 2, 270))
+            screen.blit(score_info, score_info_rect)
+            back_rect = back.get_rect(center=(WIDTH // 2, 370))
+            screen.blit(back, back_rect)
+
+            pygame.display.update()
+        
 

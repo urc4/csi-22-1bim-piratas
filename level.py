@@ -10,9 +10,11 @@ from pygame.locals import (
     K_SPACE,
     KEYUP,
     K_DOWN,
+    K_p
 )
 from scoreboard import Scoreboard
 from game_agents.explosion import Explosion
+from menu import Menu
 
 
 class Level:
@@ -31,6 +33,7 @@ class Level:
         self.power_up = False
         self.scoreboard = Scoreboard()
         self.explosions = pygame.sprite.Group()
+        self.menu = Menu()
 
     def press_key(self, event):
         if event.type == KEYDOWN:
@@ -45,6 +48,8 @@ class Level:
             if event.key == K_DOWN and self.power_up:
                 self.player.shoot_cannon(32, 10)
                 self.power_up = False
+            if event.key == K_p:  # added condition for "P" key
+                self.menu.pause_menu()  # calling the pause_menu() function
         if event.type == KEYUP:
             for k, code in zip([K_UP, K_LEFT, K_RIGHT], [UP, LEFT, RIGHT]):
                 if event.key == k and code in self.pressed_keys:
