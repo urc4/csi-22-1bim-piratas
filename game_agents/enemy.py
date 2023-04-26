@@ -2,6 +2,7 @@ import pygame
 import math
 import os.path
 from .sprite import Sprite
+from resources_utils import load_png
 
 
 model_enemy_one = {
@@ -13,6 +14,7 @@ model_enemy_one = {
     "density": 5,
     "acceleration": 0.1,
     "omega": math.pi / 36,
+    "type": 1
 }
 
 model_enemy_two = {
@@ -24,9 +26,23 @@ model_enemy_two = {
     "density": 1,
     "acceleration": 0.1,
     "omega": math.pi / 36,
+    "type": 2
 }
 
 # could potentially add enemies that turn
+
+class SingleEnemy(Sprite):
+    def __init__(self, model):
+        super().__init__(model)
+        self.type = model["type"]
+        self.lives = 2 if model["type"] == 1 else 1  # barco type 1 precisa de 2 tiros de canhao para explodir
+
+    def change_image(self):
+        self.image, self.rect = load_png(os.path.join("PNG", "Retina", "Ships", "ship (14).png"))
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        self.image = pygame.transform.rotate(self.image, 90)
+        self.original_image = self.image  # para as rotinas que rotacionam o navio
+        self.rotate_image()
 
 
 class Enemies:
@@ -41,7 +57,7 @@ class Enemies:
         else:
             model = model_enemy_one
 
-        new_enemy_sprite = Sprite(model)
+        new_enemy_sprite = SingleEnemy(model)
         self.all_enemies.add(new_enemy_sprite)
 
     def update(self):

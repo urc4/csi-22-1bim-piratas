@@ -103,10 +103,14 @@ class Level:
             destroy_cannon_ball = False
             for enemy in self.enemies.all_enemies:
                 if enemy.rect.colliderect(cannon_ball):
-                    new_explosion = Explosion(enemy.pos)
-                    self.explosions.add(new_explosion)
-                    self.enemies.all_enemies.remove(enemy)
-                    del enemy
+                    if enemy.lives == 1:
+                        new_explosion = Explosion(enemy.pos)
+                        self.explosions.add(new_explosion)
+                        self.enemies.all_enemies.remove(enemy)
+                        del enemy
+                    else:
+                        enemy.lives -= 1
+                        enemy.change_image()
                     if not cannon_ball.special:  # destroy only normal/non-special cannon balls on collision
                         destroy_cannon_ball = True
             if destroy_cannon_ball:
