@@ -38,7 +38,8 @@ else:
 
 while True:
     if level.game_over:  # entramos aqui apenas quando o jogador perde uma partida
-        pygame.mixer.music.stop()
+        if os.path.isfile('data/Audio/background.mp3'):
+            pygame.mixer.music.stop()
         level.display_game_over()
         pygame.display.flip()
         for event in pygame.event.get():
@@ -67,7 +68,7 @@ while True:
     level.draw_sprites()
     level.scoreboard.display()
 
-    if not pygame.mixer.music.get_busy():
+    if os.path.isfile('data/Audio/background.mp3') and not pygame.mixer.music.get_busy():
         pygame.mixer.music.play(loops=-1)
 
     pygame.display.flip()
