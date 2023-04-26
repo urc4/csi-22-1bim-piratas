@@ -1,3 +1,6 @@
+""" Holds class Cannonball
+
+"""
 import math
 import os.path
 from .sprite import Sprite
@@ -16,6 +19,7 @@ model_cannon_ball_one = {
 
 
 class CannonBall(Sprite):
+    """Cannonball"""
     def __init__(self, ship_parameters, special=False):
         model = model_cannon_ball_one
         model["width"] = model["height"] = ship_parameters["size"]

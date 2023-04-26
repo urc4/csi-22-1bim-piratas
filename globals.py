@@ -1,3 +1,7 @@
+"""Variables shared among many modules
+
+"""
+
 WIDTH = 1000
 HEIGHT = 800
 FPS = 60

@@ -1,5 +1,6 @@
-# mudancas para melhoria da gameplay: rotacionar e driftar, so mudar velcoidade apos presiionar K_UP
-# carregar o canhao especial
+"""Entrypoint to run the game. You want to execute it :)
+
+"""
 
 
 import pygame
@@ -36,6 +37,7 @@ menu.main_menu()
 if os.path.isfile('data/Audio/background.mp3'):
     background_music.play()
 
+level.display_full_background()
 while True:
     if level.game_over:  # entramos aqui apenas quando o jogador perde uma partida
         level.display_game_over()
@@ -44,12 +46,12 @@ while True:
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN and event.key in [K_RETURN, K_SPACE]:
+            if event.type == KEYDOWN and event.key == K_RETURN:
                 level = Level()
         continue
 
     clock.tick(FPS)
-    level.scoreboard.tick()
+    level.scoreboard.tick()  # NOTE scoreboard internal clock is also used in methods of level out of level.scoreboard
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -61,6 +63,7 @@ while True:
         # permitir atirar e mover ao mesmo tempo assim como ir pra frente e girar
 
     level.generate_enemies()
+    level.change_background()
     level.blit_sprites()
     level.update_sprites()
     level.draw_sprites()
