@@ -7,7 +7,7 @@ import os.path
 from sys import stderr
 from game_agents.enemy import Enemies
 from game_agents.player import Player
-from globals import WIDTH, HEIGHT, UP, RIGHT, LEFT
+from globals import WIDTH, HEIGHT, UP, RIGHT, LEFT, ENEMY_POS
 from pygame.locals import (
     KEYDOWN,
     K_UP,
@@ -36,16 +36,23 @@ class Level:
         pygame.display.set_caption("Piratas da Guanabara")
         self.background = pygame.Surface(self.screen.get_size())
         ocean_tile, _ = load_png(os.path.join("PNG", "Retina", "Tiles", "tile_73.png"))
+        land_tile, _ = load_png(os.path.join("PNG", "Retina", "Tiles", "tile_85.png"))
         tile_sz = 20
         ocean_tile = pygame.transform.scale(ocean_tile, (tile_sz, tile_sz))
+        land_tile = pygame.transform.scale(land_tile, (tile_sz, tile_sz))
         for i in range(0, self.screen.get_size()[0], tile_sz):
             for j in range(0, self.screen.get_size()[1], tile_sz):
                 self.background.blit(ocean_tile, (i, j))
+        for pos in ENEMY_POS:
+            self.background.blit(land_tile, pos)
         self.other_background = pygame.Surface(self.screen.get_size())  # to make ocean waves move
         for i in range(-tile_sz//2, self.screen.get_size()[0], tile_sz):
             for j in range(-tile_sz//2, self.screen.get_size()[1], tile_sz):
                 self.other_background.blit(ocean_tile, (i, j))
+        for pos in ENEMY_POS:
+            self.other_background.blit(land_tile, pos)
         self.background = self.background.convert()
+        self.other_background = self.other_background.convert()
         self.player = Player()
         self.player_sprite = pygame.sprite.RenderPlain(self.player)
         self.enemies = Enemies()
