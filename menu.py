@@ -13,6 +13,7 @@ from pygame.locals import (
     K_DOWN,
 )
 import sys
+import os.path
 
 
 # arrumar atribuições de tamanho de tela, cores e posições para como padronizado em level.py
@@ -60,7 +61,6 @@ class Menu:
                     elif 335 <= event.pos[0] <= 665 and 530 <= event.pos[1] <= 570:
                         pygame.quit()
                         sys.exit()    # quit the game
-                    # TODO check that
                     # elif 420 <= event.pos[0] <= 580 and 470 <= event.pos[1] <= 510:
                     #     screen.blit(self.background, (0, 0))
 
@@ -176,8 +176,8 @@ class Menu:
             'resume': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (400, 60)),
             'exit': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (300, 60)),
         }
-        # TODO if os.path.isfile()...
-        pygame.mixer.music.pause()
+        if os.path.isfile('data/Audio/background.mp3'):
+            pygame.mixer.music.pause()
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         font = pygame.font.SysFont('chiller', 60)
         title = font.render('PAUSE, I NEED A BIT OF RUM', True, 'White')
@@ -198,7 +198,8 @@ class Menu:
                     if 350 <= event.pos[0] <= 650 and 300 <= event.pos[1] <= 345:
                         screen.blit(self.background,(0,0))
                         pygame.display.update()
-                        pygame.mixer.music.unpause()
+                        if os.path.isfile('data/Audio/background.mp3'):
+                            pygame.mixer.music.unpause()
                         return
                     elif 390 <= event.pos[0] <= 610 and 505 <= event.pos[1] <= 555:
                         pygame.quit()
