@@ -16,18 +16,18 @@ class Menu:
     def main_menu(self):
         # dictionary to map text surfaces to main_menu_figures
         main_menu_figures = {
-            'start': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(240,60)),
-            'help': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(120,60)),
-            'quit': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(120,60))
+            'start': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(250,60)),
+            'help': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(350,60)),
+            'quit': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(460,70))
         }
         
         screen = pygame.display.set_mode((WIDTH,HEIGHT))   # set the menu screen size
-        font = pygame.font.SysFont('Rust',50)
-        title = font.render('PIRATAS DA GUANABARA', True, 'Gray')
+        font = pygame.font.SysFont('chiller',70)
+        title = font.render('PIRATAS DA GUANABARA', True, (255,255,250))
         font = pygame.font.SysFont('Arial', 36)
-        start = font.render('Start Game', True, 'White')
-        help = font.render('Help', True, 'White')
-        quit = font.render('Quit', True, 'White')
+        start = font.render('Start the battle', True, 'White')
+        help = font.render('Help, I am sinking!', True, 'White')
+        quit = font.render('Quit, the sea is not for me', True, 'White')
 
         background = pygame.image.load('data/PNG/Retina/Menu/background.jpg')
         background = pygame.transform.scale(background, (WIDTH+130,HEIGHT))
@@ -39,11 +39,11 @@ class Menu:
                     sys.exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if 420 <= event.pos[0] <= 580 and 250 <= event.pos[1] <= 290:
+                    if 405 <= event.pos[0] <= 595 and 250 <= event.pos[1] <= 290:
                         return   
-                    elif 470 <= event.pos[0] <= 530 and 380 <= event.pos[1] <= 420:
+                    elif 380 <= event.pos[0] <= 620 and 380 <= event.pos[1] <= 420:
                         self.help_menu()
-                    elif 470 <= event.pos[0] <= 530 and 510 <= event.pos[1] <= 550:
+                    elif 335 <= event.pos[0] <= 665 and 530 <= event.pos[1] <= 570:
                         pygame.quit()
                         sys.exit()
 
@@ -55,34 +55,54 @@ class Menu:
             # blit the main_menu_figures behind the respective text surfaces when the mouse hovers over the text
             start_rect = start.get_rect(center=(WIDTH // 2, 270))
             if start_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(main_menu_figures['start'], (start_rect.x - 45, start_rect.y - 8))
+                screen.blit(main_menu_figures['start'], (start_rect.x - 30, start_rect.y - 8))
             screen.blit(start, start_rect)
             
             help_rect = help.get_rect(center=(WIDTH // 2, 400))
             if help_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(main_menu_figures['help'], (help_rect.x - 30, help_rect.y - 8))
+                screen.blit(main_menu_figures['help'], (help_rect.x - 50, help_rect.y - 8))
             screen.blit(help, help_rect)
             
-            quit_rect = quit.get_rect(center=(WIDTH // 2, 530))
+            quit_rect = quit.get_rect(center=(WIDTH // 2, 550))
             if quit_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(main_menu_figures['quit'], (quit_rect.x - 33, quit_rect.y - 8))
+                screen.blit(main_menu_figures['quit'], (quit_rect.x - 63, quit_rect.y - 8))
             screen.blit(quit, quit_rect)
 
             pygame.display.update()
 
 
     def help_menu(self):
+        # Set up the fonts
+        title_font = pygame.font.SysFont('chiller', 60)
+        info_font = pygame.font.SysFont('Arial', 25)
+        space_font = pygame.font.SysFont('Times New Roman', 30)
+        back_font = pygame.font.SysFont('Arial', 36)
+
+        #Set up the symbols
+        arrow_up = u"\u2191"
+        arrow_down = u"\u2193"
+        arrow_right = u"\u2192"
+        arrow_left = u"\u2190"
 
         help_menu_figures = {
-            'back': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(120,60)),
+            'back': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(240,60)),
         }
 
         screen = pygame.display.set_mode((WIDTH,HEIGHT))   
-        font = pygame.font.SysFont('Arial',50)
-        title = font.render('HELP', True, 'White')
-        font = pygame.font.SysFont('Arial', 36)
-        info = font.render('How to play: ...', True, 'White')
-        back = font.render('Back', True, 'White')
+        title = title_font.render('HELP, I AM SINKING!', True, 'White')
+        #left side of help_menu
+        keyboard_info = back_font.render('Keyboard commands:', True, 'White')
+        move_front_info = info_font.render(f"Press {arrow_up} to move forward", True, 'White')
+        move_right_info = info_font.render(f"Press {arrow_right} to move to the right", True, 'White')
+        move_left_info = info_font.render(f"Press {arrow_left} to move to the left", True, 'White')
+        shoot_cannon_info1 = info_font.render('Press', True, 'White')
+        shoot_cannon_info2 = space_font.render('space', True, 'White')
+        shoot_cannon_info3 = info_font.render('to fire the normal cannon', True, 'White')
+        shoot_special_cannon_info = info_font.render(f"Press {arrow_down} to fire the special cannon (when loaded)", True, 'White')
+        pause_info = info_font.render('Press P to pause the game', True, 'White')
+
+        #right side of help_menu
+        back = back_font.render('Back to battle', True, 'White')
 
         background = pygame.image.load('data/PNG/Retina/Menu/background.jpg')
         background = pygame.transform.scale(background, (WIDTH+130,HEIGHT))
@@ -92,21 +112,36 @@ class Menu:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if 470 <= event.pos[0] <= 530 and 350 <= event.pos[1] <= 390:
+                    if 410 <= event.pos[0] <= 590 and HEIGHT - 110 <= event.pos[1] <= HEIGHT - 70:
                         return
 
             screen.fill((0, 0, 0))
             screen.blit(background,(0,0))
             title_rect = title.get_rect(center=(WIDTH // 2, 100))
             screen.blit(title, title_rect)
-            info_rect = info.get_rect(center=(WIDTH // 2, 270))
-            screen.blit(info, info_rect)
+            keyboard_info_rect = keyboard_info.get_rect(center=(WIDTH // 4, 220))
+            screen.blit(keyboard_info, keyboard_info_rect)
+            move_front_info_rect = move_front_info.get_rect(center=(WIDTH // 4, 270))
+            screen.blit(move_front_info, move_front_info_rect)
+            move_right_info_rect = move_right_info.get_rect(center=(WIDTH // 4, 320))
+            screen.blit(move_right_info, move_right_info_rect)   
+            move_left_info_rect = move_left_info.get_rect(center=(WIDTH // 4, 370))
+            screen.blit(move_left_info, move_left_info_rect)   
+        
+            screen.blit(shoot_cannon_info1, (50, 400))
+            screen.blit(shoot_cannon_info2, (shoot_cannon_info1.get_width() + 60, 397))
+            screen.blit(shoot_cannon_info3, (shoot_cannon_info1.get_width() + shoot_cannon_info2.get_width() + 70, 400)) 
 
-            back_rect = back.get_rect(center=(WIDTH // 2, 370))
+            shoot_special_cannon_info_rect = shoot_special_cannon_info.get_rect(center=(WIDTH // 4, 460))
+            screen.blit(shoot_special_cannon_info, shoot_special_cannon_info_rect)
+
+            pause_info_rect = pause_info.get_rect(center=(WIDTH // 4, 505))
+            screen.blit(pause_info, pause_info_rect)      
+
+            back_rect = back.get_rect(center=(WIDTH // 2, HEIGHT - 90))
             if back_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(help_menu_figures['back'], (back_rect.x - 30, back_rect.y - 5))
+                screen.blit(help_menu_figures['back'], (back_rect.x - 35, back_rect.y - 5))
             screen.blit(back, back_rect)
 
             pygame.display.update()
@@ -114,17 +149,17 @@ class Menu:
     def pause_menu(self):
 
         pause_menu_figures = {
-            'resume': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(240,60)),
-            'exit': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(170,60)),
+            'resume': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(400,60)),
+            'exit': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'),(300,60)),
         }
         pygame.mixer.music.pause()
         screen = pygame.display.set_mode((WIDTH,HEIGHT))   
-        font = pygame.font.SysFont('Arial',50)
-        title = font.render('GAME PAUSE MENU', True, 'White')
-        font = pygame.font.SysFont('Arial', 36)
+        font = pygame.font.SysFont('chiller',60)
+        title = font.render('PAUSE, I NEED A BIT OF RUM', True, 'White')
+        font = pygame.font.SysFont('Arial', 45)
         ## score_info = font.render('Current score: ...', True, 'White') #botar score aqui
-        resume = font.render('Resume', True, 'White')
-        exit = font.render('Exit', True, 'White')
+        resume = font.render('Resume the battle', True, 'White')
+        exit = font.render('Exit the battle', True, 'White')
 
         background = pygame.image.load('data/PNG/Retina/Menu/background.jpg')
         background = pygame.transform.scale(background, (WIDTH+130,HEIGHT))
@@ -135,12 +170,12 @@ class Menu:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if 410 <= event.pos[0] <= 590 and 300 <= event.pos[1] <= 340:
+                    if 350 <= event.pos[0] <= 650 and 300 <= event.pos[1] <= 345:
                         screen.fill((135, 206, 250))
                         pygame.display.update()
                         pygame.mixer.music.unpause()
                         return
-                    elif 410 <= event.pos[0] <= 590 and 460 <= event.pos[1] <= 500:
+                    elif 390 <= event.pos[0] <= 610 and 505 <= event.pos[1] <= 555:
                         pygame.quit()
                         sys.exit()
 
@@ -153,12 +188,12 @@ class Menu:
 
             resume_rect = resume.get_rect(center=(WIDTH // 2, 320))
             if resume_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(pause_menu_figures['resume'], (resume_rect.x - 60, resume_rect.y - 10))
+                screen.blit(pause_menu_figures['resume'], (resume_rect.x - 50, resume_rect.y))
             screen.blit(resume, resume_rect)
 
-            exit_rect = exit.get_rect(center=(WIDTH // 2, 480))
+            exit_rect = exit.get_rect(center=(WIDTH // 2, 530))
             if exit_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(pause_menu_figures['exit'], (exit_rect.x - 60, exit_rect.y - 10))
+                screen.blit(pause_menu_figures['exit'], (exit_rect.x - 45, exit_rect.y))
             screen.blit(exit, exit_rect)
 
             pygame.display.update()
