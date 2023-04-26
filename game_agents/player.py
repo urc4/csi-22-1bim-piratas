@@ -27,7 +27,7 @@ class Player(Sprite):
         self.angle = 3 * math.pi / 2
         self.all_cannon_balls = pygame.sprite.Group()
         self.cannon_sound = pygame.mixer.Sound('data/Audio/cannon.mp3') #Som aqui
-        self.cannon_sound.set_volume(0.3)
+        self.cannon_sound.set_volume(0.6)
         #explosion_sound = pygame.mixer.Sound('data/Audio/explosion.mp3') #Som aqui
 
     def shoot_cannon(self, special=False):
