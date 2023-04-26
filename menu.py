@@ -10,8 +10,16 @@ from pygame.locals import (
     K_DOWN,
 )
 
-#arrumar atribuições de tamanho de tela, cores e posições para como padronizado em level.py
+
+# arrumar atribuições de tamanho de tela, cores e posições para como padronizado em level.py
 class Menu:
+    def __init__(self, background=None):
+        if background:
+            self.background = background
+        else:
+            background = pygame.image.load('data/PNG/Retina/Menu/background.jpg')
+            self.background = pygame.transform.scale(background, (WIDTH + 130, HEIGHT))
+
     def main_menu(self):
         screen = pygame.display.set_mode((WIDTH,HEIGHT))   # set the menu screen size
         font = pygame.font.SysFont('Arial',50)
@@ -20,9 +28,6 @@ class Menu:
         start = font.render('Start Game', True, 'White')
         help = font.render('Help', True, 'White')
         quit = font.render('Quit', True, 'White')
-
-        background = pygame.image.load('data/PNG/Retina/Menu/background.jpg')
-        background = pygame.transform.scale(background, (WIDTH+130,HEIGHT))
 
         while True:
             for event in pygame.event.get():
@@ -40,10 +45,10 @@ class Menu:
                         pygame.quit()
                         quit()    # quit the game
                     elif 420 <= event.pos[0] <= 580 and 470 <= event.pos[1] <= 510:
-                        screen.blit(background, (0, 0))
+                        screen.blit(self.background, (0, 0))
 
             screen.fill((0, 0, 0))
-            screen.blit(background,(0,0))
+            screen.blit(self.background,(0,0))
             title_rect = title.get_rect(center=(WIDTH // 2, 100))
             screen.blit(title, title_rect)
             start_rect = start.get_rect(center=(WIDTH // 2, 270))
@@ -105,7 +110,7 @@ class Menu:
                     quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if 410 <= event.pos[0] <= 590 and 350 <= event.pos[1] <= 390:
-                        screen.fill((135, 206, 250))
+                        screen.blit(self.background,(0,0))
                         pygame.display.update()
                         return
 

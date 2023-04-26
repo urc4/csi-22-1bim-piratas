@@ -1,4 +1,5 @@
 import pygame
+import os.path
 from sys import stderr
 from game_agents.enemy import Enemies
 from game_agents.player import Player
@@ -16,6 +17,7 @@ from pygame.locals import (
 from scoreboard import Scoreboard
 from game_agents.explosion import Explosion
 from menu import Menu
+from resources_utils import load_png
 
 if not pygame.font:
     print("Warning, fonts disabled", file=stderr)
@@ -26,8 +28,17 @@ class Level:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Piratas da Guanabara")
         self.background = pygame.Surface(self.screen.get_size())
+        ocean_tile, _ = load_png(os.path.join("PNG", "Retina", "Tiles", "tile_73.png"))
+        tile_sz = 20
+        ocean_tile = pygame.transform.scale(ocean_tile, (tile_sz, tile_sz))
+        for i in range(0, self.screen.get_size()[0], tile_sz):
+            for j in range(0, self.screen.get_size()[1], tile_sz):
+                self.background.blit(ocean_tile, (i, j))
+        self.other_background = pygame.Surface(self.screen.get_size())  # to make ocean waves move
+        for i in range(-tile_sz//2, self.screen.get_size()[0], tile_sz):
+            for j in range(-tile_sz//2, self.screen.get_size()[1], tile_sz):
+                self.other_background.blit(ocean_tile, (i, j))
         self.background = self.background.convert()
-        self.background.fill((135, 206, 250))
         self.player = Player()
         self.player_sprite = pygame.sprite.RenderPlain(self.player)
         self.enemies = Enemies()
@@ -37,8 +48,11 @@ class Level:
         self.power_up = False
         self.scoreboard = Scoreboard()
         self.explosions = pygame.sprite.Group()
-        self.menu = Menu()
+        self.menu = Menu(self.background)
         self.game_over = False
+
+    def display_full_background(self):
+        self.screen.blit(self.background, (0, 0))
 
     def press_key(self, event):
         if event.type == KEYDOWN:
@@ -71,12 +85,17 @@ class Level:
         if self.scoreboard.power_up_counter == 900:
             self.power_up = True
 
+    def change_background(self):
+        if self.scoreboard.count % 60 == 0:
+            self.background, self.other_background = self.other_background, self.background
+            self.display_full_background()
+
     def blit_sprites(self):  # "apaga" a antiga posicao das sprites (na verdade sobrescreve com um pedaço do background)
         if len(self.pressed_keys) > 0:
             self.player.move(self.pressed_keys)
         else:
             self.player.move_unpressed()
-        self.screen.blit(self.background, self.player.rect)
+        self.screen.blit(self.background, self.player.rect, self.player.rect)
         for cannon_ball in self.player.all_cannon_balls:
             if cannon_ball.is_out_of_screen():
                 self.player.all_cannon_balls.remove(cannon_ball)
