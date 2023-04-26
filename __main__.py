@@ -15,6 +15,7 @@ from pygame.locals import (
     K_DOWN,
 )
 import sys
+import os
 from globals import WIDTH, HEIGHT, UP, DOWN, RIGHT, LEFT, FPS
 from level import Level
 from menu import Menu
@@ -26,10 +27,14 @@ menu = Menu()
 
 pygame.display.flip()
 
-background_music = pygame.mixer.Sound('data/Audio/background.mp3') #som aqui
-background_music.set_volume(0.5) #som aqui
+if os.path.isfile('data/Audio/background.mp3'):
+    background_music = pygame.mixer.Sound('data/Audio/background.mp3') #som aqui
+    background_music.set_volume(0.5) #som aqui
+else:
+    print("data/Audio/background.mp3 not found... ignoring", file=sys.stderr)
 menu.main_menu()
-background_music.play()
+if os.path.isfile('data/Audio/background.mp3'):
+    background_music.play()
 
 while True:
     clock.tick(FPS)
