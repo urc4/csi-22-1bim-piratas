@@ -53,9 +53,9 @@ class Level:
             if event.key == K_DOWN and self.power_up:
                 self.player.shoot_cannon(special=True)
                 self.power_up = False
+                self.scoreboard.power_up_counter = 0
             if event.key == K_p:  # added condition for "P" key
                 self.menu.pause_menu()  # calling the pause_menu() function
-                self.scoreboard.power_up_counter = 0
         if event.type == KEYUP:
             for k, code in zip([K_UP, K_LEFT, K_RIGHT], [UP, LEFT, RIGHT]):
                 if event.key == k and code in self.pressed_keys:
