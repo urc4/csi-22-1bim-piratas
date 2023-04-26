@@ -219,7 +219,7 @@ class Level:
             self.screen.blit(text, textpos)
             # restart message:
             font = pygame.font.Font(None, 32)
-            text = font.render("PRESS ENTER OR SPACE TO PLAY AGAIN", True, (245, 242, 66))
+            text = font.render("PRESS ENTER TO PLAY AGAIN", True, (245, 242, 66))
             textpos = text.get_rect(centerx=self.background.get_width() / 2,
                                     centery=self.background.get_height() / 2 + 80)
             self.screen.blit(text, textpos)

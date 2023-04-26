@@ -46,7 +46,7 @@ while True:
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN and event.key in [K_RETURN, K_SPACE]:
+            if event.type == KEYDOWN and event.key == K_RETURN:
                 level = Level()
         continue
 
