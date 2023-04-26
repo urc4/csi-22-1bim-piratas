@@ -6,7 +6,8 @@ import math
 import os.path
 from .sprite import Sprite
 from resources_utils import load_png
-
+from globals import ENEMY_POS
+import random
 
 model_enemy_one = {
     "png": os.path.join("PNG", "Retina", "Ships", "ship (8).png"),
@@ -40,6 +41,7 @@ class SingleEnemy(Sprite):
         super().__init__(model)
         self.type = model["type"]
         self.lives = 2 if model["type"] == 1 else 1  # barco type 1 precisa de 2 tiros de canhao para explodir
+        self.pos = random.choice(ENEMY_POS)
 
     def change_image(self):
         """Update type 1 boat art (technically, a Surface  object) to indicate it received the first shot
