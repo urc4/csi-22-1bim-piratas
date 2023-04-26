@@ -174,6 +174,7 @@ class Menu:
         """
         pause_menu_figures = {
             'resume': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (400, 60)),
+            'help': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (400, 60)),
             'exit': pygame.transform.scale(pygame.image.load('data/PNG/Retina/Effects/explosion2.png'), (300, 60)),
         }
         if os.path.isfile('data/Audio/background.mp3'):
@@ -181,9 +182,9 @@ class Menu:
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         font = pygame.font.SysFont('chiller', 60)
         title = font.render('PAUSE, I NEED A BIT OF RUM', True, 'White')
-        font = pygame.font.SysFont('Arial', 45)
-        ## score_info = font.render('Current score: ...', True, 'White') #botar score aqui
+        font = pygame.font.SysFont('Arial', 36)
         resume = font.render('Resume the battle', True, 'White')
+        help = font.render('Help, I am sinking!', True, 'White')
         exit = font.render('Exit the battle', True, 'White')
 
         background = pygame.image.load('data/PNG/Retina/Menu/background.jpg')
@@ -195,13 +196,15 @@ class Menu:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if 350 <= event.pos[0] <= 650 and 300 <= event.pos[1] <= 345:
+                    if 405 <= event.pos[0] <= 595 and 250 <= event.pos[1] <= 290:
                         screen.blit(self.background,(0,0))
                         pygame.display.update()
                         if os.path.isfile('data/Audio/background.mp3'):
                             pygame.mixer.music.unpause()
                         return
-                    elif 390 <= event.pos[0] <= 610 and 505 <= event.pos[1] <= 555:
+                    elif 380 <= event.pos[0] <= 620 and 380 <= event.pos[1] <= 420:
+                        self.help_menu()
+                    elif 335 <= event.pos[0] <= 665 and 530 <= event.pos[1] <= 570:
                         pygame.quit()
                         sys.exit()
 
@@ -216,6 +219,11 @@ class Menu:
             if resume_rect.collidepoint(pygame.mouse.get_pos()):
                 screen.blit(pause_menu_figures['resume'], (resume_rect.x - 50, resume_rect.y))
             screen.blit(resume, resume_rect)
+
+            help_rect = help.get_rect(center=(WIDTH // 2, 320))
+            if help_rect.collidepoint(pygame.mouse.get_pos()):
+                screen.blit(pause_menu_figures['help'], (help_rect.x - 50, help_rect.y))
+            screen.blit(help, help_rect)
 
             exit_rect = exit.get_rect(center=(WIDTH // 2, 530))
             if exit_rect.collidepoint(pygame.mouse.get_pos()):
