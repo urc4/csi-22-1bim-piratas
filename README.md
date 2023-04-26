@@ -17,6 +17,9 @@ de gráficos em um ambiente 2D. O objetivo do projeto é desenvolver habilidades
 > Em seguida baixa a [imagem de liuzishan no Freepik](https://br.freepik.com/fotos-gratis/pintura-digital-de-antigos-navios-de-guerra-viajando-em-mares-agitados_14402173.htm#query=guerra%20de%20navios&position=1&from_view=search&track=robertav1_2_sidr) como ``data/PNG/Retina/Menu/background.jpg``.
 > 
 > Criamos o script ``data/setup_data.sh`` para facilitar estes procedimentos (precisa de ``curl`` instalado e deve ser executado **a partir** do diretório ``data/``)
+> 
+> ### NOTAS SOBRE MÚSICA
+> Uma música de fundo em formato mp3 pode ser adicionada. Basta copiar sua música como ``data/Audio/background.mp3``. 
 ---
 
 ## 🦜 Tema
@@ -29,13 +32,14 @@ do navio principal aumenta. Essa dificuldade crescente será feita na forma acr�
 
 ## 📐 Mecânicas
 > Navio principal: aceleração apenas no sentido da proa com auxílio de rotação em ambos sentidos (horário e anti-horário); disparo de canhões para destruição da frota inimiga que utilizar-se-ão de princípios físicos de conservação de energia e de quantidade de movimento de modo a possibilitar ao navio um terceiro grau de liberdade em movimentação e adicionar jogabilidade com diversas estratégias de movimentação; carregamento de um especial baseado no tempo de utilização de um canhão de tamanho maior que tem maior poder destrutivo.; pode se deslocar de um lado tela para outro
->Frota inimiga: gerada aleatoriamente nos cantos da tela, e cada navio depois de gerado se movimenta em uma linha reta e elimina o personagem principal
-em caso de colisão. A frota será composta de navios piratas e piratas propriamente ditos nadando em alto-mar. Caso o navio pirata seja destruído, o mesmo será dividido em dois piratas. Ambos são eliminados pelo personagem principal caso sejam atingidos por uma bala de canhão.
+>
+> Frota inimiga: gerada aleatoriamente nas ilhas, e cada navio depois de gerado se movimenta em uma linha reta e elimina o personagem principal
+em caso de colisão. A frota será composta de navios piratas de dois tipos, sendo necessário dois tiros de canhão para destruir o navio grande.
 
 
 ## ☕ Contribuidores
 
-Este projeto foi realizado em colaboração com: Daniel Quintão(https://github.com/danielquintao), Giuseppe Vicente(https://github.com/giuseppevb) e Gustavo Beato(https://github.com/urc4)
+Este projeto foi realizado em colaboração de: Daniel Quintão(https://github.com/danielquintao), Giuseppe Vicente(https://github.com/giuseppevb) e Gustavo Beato(https://github.com/urc4)
 
 ## 🎨 Atribuições da arte usada
 
